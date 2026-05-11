@@ -1,33 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import gsap from 'gsap'
-import { assistantKnowledgeBase, assistantPrompts } from '../data/assistantKnowledge'
+import { assistantPrompts, getNeuralCoreReply, stripJsonDelimiters } from '../data/assistantKnowledge'
 import { MOTION_DURATION, MOTION_EASE_STANDARD } from '../lib/motionTokens'
 
 const SECTION_PROMPTS = {
   home: ['Tell me about Jeel', 'What technologies does he use?', 'How can I contact him?'],
   'skills-universe': ['Ask about Jeel frontend stack', 'Explore AI technologies', 'What tools power this portfolio?'],
   systems: ['Show AI projects', 'Explain FleetFlow AI', 'What is ISLR?'],
-}
-
-function resolveResponse(input) {
-  const query = input.toLowerCase()
-  const entries = Object.values(assistantKnowledgeBase)
-  const match = entries.find((entry) =>
-    entry.keywords.some((keyword) => query.includes(keyword)),
-  )
-  return (
-    match || {
-      title: 'Neural Core Response',
-      summary:
-        "I can guide you through Jeel's profile, AI projects, technologies, architecture, internship context, or contact path.",
-      bullets: [
-        'Try: "Tell me about Jeel"',
-        'Try: "Show AI projects"',
-        'Try: "Explain FleetFlow AI"',
-      ],
-    }
-  )
 }
 
 function NeuralAssistant() {
@@ -38,8 +18,7 @@ function NeuralAssistant() {
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      text: 'Neural Core online. Ask about Jeel, projects, architecture, or stack details.',
-      payload: null,
+      text: 'Neural Core online. Ask about Jeel, his projects, stack, or how to reach him.',
     },
   ])
   const [inputValue, setInputValue] = useState('')
@@ -95,14 +74,13 @@ function NeuralAssistant() {
   const handleOpen = () => setIsOpen((state) => !state)
 
   const pushResponse = (question) => {
-    const response = resolveResponse(question)
+    const reply = stripJsonDelimiters(getNeuralCoreReply(question))
     setMessages((prev) => [
       ...prev,
-      { role: 'user', text: question, payload: null },
+      { role: 'user', text: question },
       {
         role: 'assistant',
-        text: response.summary,
-        payload: response,
+        text: reply,
       },
     ])
   }
@@ -201,19 +179,9 @@ function NeuralAssistant() {
                       : 'ml-auto w-fit max-w-[85%] rounded-2xl border border-violet-200/20 bg-violet-300/[0.08] p-3'
                   }
                 >
-                  <p className="text-sm leading-6 text-slate-100">{message.text}</p>
-                  {message.payload && (
-                    <div className="mt-2 rounded-xl border border-white/10 bg-slate-900/70 p-2.5">
-                      <p className="text-xs font-semibold uppercase tracking-[0.14em] text-cyan-100">
-                        {message.payload.title}
-                      </p>
-                      <ul className="mt-2 space-y-1.5 text-xs leading-5 text-slate-300">
-                        {message.payload.bullets.map((bullet) => (
-                          <li key={bullet}>- {bullet}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
+                  <p className="text-sm leading-6 text-slate-100">
+                    {message.role === 'assistant' ? stripJsonDelimiters(message.text) : message.text}
+                  </p>
                 </motion.div>
               ))}
             </div>
