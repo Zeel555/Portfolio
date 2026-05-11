@@ -34,12 +34,12 @@ const skillCategories = [
 ]
 
 const floatingNodes = [
-  { label: 'React', x: '8%', y: '22%', delay: 0.2 },
-  { label: 'Node.js', x: '18%', y: '68%', delay: 0.7 },
-  { label: 'TensorFlow', x: '44%', y: '16%', delay: 0.4 },
-  { label: 'FastAPI', x: '58%', y: '74%', delay: 0.9 },
-  { label: 'Docker', x: '76%', y: '32%', delay: 0.5 },
-  { label: 'MongoDB', x: '86%', y: '62%', delay: 1.1 },
+  { label: 'React', x: 80, y: 114.4, delay: 0.2 },
+  { label: 'Node.js', x: 180, y: 353.6, delay: 0.7 },
+  { label: 'TensorFlow', x: 440, y: 83.2, delay: 0.4 },
+  { label: 'FastAPI', x: 580, y: 384.8, delay: 0.9 },
+  { label: 'Docker', x: 760, y: 166.4, delay: 0.5 },
+  { label: 'MongoDB', x: 860, y: 322.4, delay: 1.1 },
 ]
 
 const revealVariant = {
@@ -57,11 +57,11 @@ function SkillsUniverse() {
   const shouldReduceMotion = useReducedMotion()
   const links = useMemo(
     () => [
-      ['8%', '22%', '44%', '16%'],
-      ['44%', '16%', '76%', '32%'],
-      ['18%', '68%', '58%', '74%'],
-      ['58%', '74%', '86%', '62%'],
-      ['44%', '16%', '58%', '74%'],
+      [80, 114.4, 440, 83.2],
+      [440, 83.2, 760, 166.4],
+      [180, 353.6, 580, 384.8],
+      [580, 384.8, 860, 322.4],
+      [440, 83.2, 580, 384.8],
     ],
     [],
   )
@@ -195,7 +195,7 @@ function SkillsUniverse() {
               <motion.div
                 key={node.label}
                 className="group absolute"
-                style={{ left: node.x, top: node.y }}
+                style={{ left: `${node.x / 10}%`, top: `${node.y / 5.2}%` }}
                 animate={
                   shouldReduceMotion
                     ? undefined
