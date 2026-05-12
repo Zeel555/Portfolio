@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence } from 'framer-motion'
-import AboutNeural from './components/AboutNeural'
 import ContactNeural from './components/ContactNeural'
+import CodingStats from './components/CodingStats'
+import Credentials from './components/Credentials'
+import ExperienceProof from './components/ExperienceProof'
 import Hero from './components/Hero'
 import IntelligentSystems from './components/IntelligentSystems'
 import NeuralAssistant from './components/NeuralAssistant'
 import NeuralBackground from './components/NeuralBackground'
 import NeuralCursor from './components/NeuralCursor'
+import PortfolioFooter from './components/PortfolioFooter'
 import ProjectModal from './components/ProjectModal'
 import SkillsUniverse from './components/SkillsUniverse'
 import useLenisSmoothScroll from './hooks/useLenisSmoothScroll'
@@ -62,10 +65,13 @@ function App() {
       <NeuralAssistant />
       <div className="relative z-10">
         <Hero />
-        <AboutNeural />
+        <CodingStats />
+        <ExperienceProof />
         <SkillsUniverse />
         <IntelligentSystems onProjectClick={setSelectedProject} />
+        <Credentials />
         <ContactNeural />
+        <PortfolioFooter />
       </div>
       <AnimatePresence>
         {selectedProject ? (

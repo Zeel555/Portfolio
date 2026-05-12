@@ -6,9 +6,12 @@ import { MOTION_DURATION, MOTION_EASE_STANDARD } from '../lib/motionTokens'
 
 const SECTION_PROMPTS = {
   home: ['Tell me about Jeel', 'What technologies does he use?', 'How can I contact him?'],
+  stats: ['Show proof points', 'How many projects?', 'Is Jeel available?'],
   about: ['Tell me about Jeel', 'Internship experience', 'What is your university path?'],
+  experience: ['Internship experience', 'What is your university path?', 'Is Jeel available?'],
   'skills-universe': ['Ask about Jeel frontend stack', 'Explore AI technologies', 'What tools power this portfolio?'],
   projects: ['Show AI projects', 'Explain FleetFlow AI', 'What is ISLR?'],
+  credentials: ['Certifications', 'Achievements', 'Show proof points'],
   contact: ['How can I contact him?', 'Are you open to roles?', 'What is your email?'],
 }
 
@@ -45,7 +48,7 @@ function NeuralAssistant() {
       return undefined
     }
 
-    const sectionIds = ['home', 'about', 'skills-universe', 'projects', 'contact']
+    const sectionIds = ['home', 'stats', 'about', 'experience', 'skills-universe', 'projects', 'credentials', 'contact']
     const targets = sectionIds
       .map((id) => document.getElementById(id))
       .filter((element) => element instanceof HTMLElement)

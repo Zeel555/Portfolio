@@ -10,10 +10,12 @@ import './Hero.css'
 import { MOTION_DURATION, MOTION_EASE_STANDARD } from '../lib/motionTokens'
 
 const navLinks = [
+  { label: 'Stats', href: '#stats' },
   { label: 'About', href: '#about' },
-  { label: 'Systems', href: '#projects' },
+  { label: 'Experience', href: '#experience' },
   { label: 'Skills', href: '#skills-universe' },
   { label: 'Projects', href: '#projects' },
+  { label: 'Proof', href: '#credentials' },
   { label: 'Contact', href: '#contact' },
 ]
 
@@ -78,6 +80,65 @@ function FloatingAccent({ className, delay = 0, x = 0, y = -14, duration = 14 })
   )
 }
 
+function Logo() {
+  return (
+    <div className="relative flex items-center justify-center group pointer-events-none">
+      {/* Dynamic Background Glow */}
+      <div className="absolute inset-0 -z-10 bg-gradient-to-tr from-[#7C3AED] to-[#06B6D4] blur-[14px] opacity-25 group-hover:opacity-50 transition-opacity duration-500 rounded-full" />
+      
+      <svg width="40" height="40" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="relative z-10">
+        <defs>
+          <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#7C3AED" />
+            <stop offset="100%" stopColor="#06B6D4" />
+          </linearGradient>
+          <filter id="logoGlow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="3" result="blur" />
+            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+          </filter>
+        </defs>
+
+        {/* Animated Outer Orbital */}
+        <motion.circle 
+          cx="50" cy="50" r="46" 
+          stroke="url(#logoGrad)" 
+          strokeWidth="1.5" 
+          strokeDasharray="10 15" 
+          opacity="0.3"
+          animate={{ rotate: 360 }}
+          transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+        />
+
+        {/* Central Logo Mark - Stylized JS */}
+        <path 
+          d="M35 30 L45 30 L45 60 C45 70 35 75 25 70" 
+          stroke="url(#logoGrad)" 
+          strokeWidth="8" 
+          strokeLinecap="round" 
+          filter="url(#logoGlow)"
+        />
+        <path 
+          d="M55 70 C55 70 75 75 75 55 C75 35 55 35 55 35 C55 35 75 35 75 15" 
+          stroke="url(#logoGrad)" 
+          strokeWidth="8" 
+          strokeLinecap="round" 
+          filter="url(#logoGlow)"
+        />
+        
+        <text 
+          x="50" y="55" 
+          textAnchor="middle" 
+          fill="white" 
+          style={{ fontSize: '32px', fontWeight: '900', fontFamily: 'Space Grotesk, sans-serif', letterSpacing: '-2px' }}
+          className="opacity-90"
+        >
+          JS
+        </text>
+      </svg>
+    </div>
+  )
+}
+
 function PremiumNav() {
   return (
     <motion.nav
@@ -89,12 +150,10 @@ function PremiumNav() {
     >
       <a
         href="#home"
-        className="group flex min-h-11 shrink-0 items-center gap-3 text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-200"
+        className="group flex min-h-11 shrink-0 items-center gap-4 text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-200"
       >
-        <span className="flex h-9 w-9 items-center justify-center rounded-full border border-cyan-400/50 bg-cyan-500/10 font-display text-sm font-semibold text-cyan-200 shadow-[0_0_16px_rgba(6,182,212,0.25)]">
-          JS
-        </span>
-        <span className="hidden font-display text-[15px] font-medium text-white sm:inline">
+        <Logo />
+        <span className="hidden font-display text-[17px] font-bold tracking-tight text-white sm:inline bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent">
           Jeel Sadariya
         </span>
       </a>
@@ -112,11 +171,10 @@ function PremiumNav() {
       </div>
 
       <a
-        href="/resume_JEEL_Software.pdf"
-        download="Jeel_Sadariya_Resume.pdf"
+        href="mailto:zeelsadariya@gmail.com?subject=Resume%20request%20for%20Jeel%20Sadariya"
         className="hidden min-h-11 items-center gap-1.5 rounded-lg border border-white/10 px-4 py-2 font-display text-[13px] text-[#94A3B8] transition-all duration-200 hover:border-cyan-400/40 hover:text-cyan-400 lg:inline-flex"
       >
-        <span aria-hidden>↓</span> Resume
+        <span aria-hidden>CV</span> Request resume
       </a>
 
       <a
@@ -253,7 +311,7 @@ function Hero() {
             variants={badgeMotion}
           >
             <span className="h-2 w-2 rounded-full bg-violet-300 shadow-[0_0_18px_rgba(124,58,237,0.82)]" />
-            Neural portfolio · AI cosmos
+            Neural portfolio / AI systems
           </motion.div>
 
           <h1
@@ -264,14 +322,14 @@ function Hero() {
               Hi, I&apos;m Jeel.
             </motion.span>
             <motion.span className="block text-white" style={{ lineHeight: 0.98 }} variants={lineMotion}>
-              Building neural-grade
+              Building full-stack
             </motion.span>
             <motion.span
               className="block text-[#7C3AED]"
               style={{ lineHeight: 0.98 }}
               variants={lineMotion}
             >
-              digital systems.
+              AI products.
             </motion.span>
           </h1>
 
@@ -279,8 +337,8 @@ function Hero() {
             className="mt-5 max-w-2xl font-display text-base leading-7 text-slate-300/92 sm:mt-6 sm:text-lg sm:leading-8"
             variants={contentMotion}
           >
-            Full stack developer and AI/ML enthusiast from Rajkot — cinematic interfaces, intelligent systems, and
-            production-grade engineering from CHARUSAT to real deployed products.
+            Full stack developer and AI/ML engineer from Rajkot, building realtime products, polished interfaces,
+            and production-minded systems across React, Node.js, FastAPI, MongoDB, and TensorFlow.
           </motion.p>
 
           <motion.div
@@ -392,7 +450,7 @@ function Hero() {
                   letterSpacing: '0.04em',
                 }}
               >
-                LeetCode Solved
+                DSA Problems
               </div>
             </div>
           </motion.div>

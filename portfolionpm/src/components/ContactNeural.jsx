@@ -1,7 +1,24 @@
 import { motion, useReducedMotion } from 'framer-motion'
+import { useState } from 'react'
 
 function ContactNeural() {
   const shouldReduceMotion = useReducedMotion()
+  const [status, setStatus] = useState('idle')
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    const data = new FormData(event.currentTarget)
+    const name = data.get('name') || 'Portfolio visitor'
+    const email = data.get('email') || 'No email provided'
+    const subject = data.get('subject') || 'Portfolio opportunity'
+    const message = data.get('message') || ''
+    const body = `Name: ${name}\nEmail: ${email}\n\n${message}`
+
+    window.location.href = `mailto:zeelsadariya@gmail.com?subject=${encodeURIComponent(
+      subject,
+    )}&body=${encodeURIComponent(body)}`
+    setStatus('sent')
+  }
 
   return (
     <section
@@ -37,7 +54,7 @@ function ContactNeural() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            onSubmit={(e) => e.preventDefault()}
+            onSubmit={handleSubmit}
           >
             <div className="grid gap-4 sm:grid-cols-2">
               <label className="block font-display text-sm text-slate-400">
@@ -47,6 +64,8 @@ function ContactNeural() {
                   placeholder="Your name"
                   type="text"
                   autoComplete="name"
+                  name="name"
+                  required
                 />
               </label>
               <label className="block font-display text-sm text-slate-400">
@@ -56,6 +75,8 @@ function ContactNeural() {
                   placeholder="you@example.com"
                   type="email"
                   autoComplete="email"
+                  name="email"
+                  required
                 />
               </label>
             </div>
@@ -65,13 +86,17 @@ function ContactNeural() {
                 className="mt-1.5 w-full rounded-xl border border-white/10 bg-[#0f172a]/80 px-3 py-2.5 font-display text-slate-100 outline-none focus:border-cyan-400/40"
                 placeholder="Project or opportunity"
                 type="text"
+                name="subject"
+                required
               />
             </label>
             <label className="block font-display text-sm text-slate-400">
               Message
               <textarea
                 className="mt-1.5 min-h-[120px] w-full resize-y rounded-xl border border-white/10 bg-[#0f172a]/80 px-3 py-2.5 font-display text-slate-100 outline-none focus:border-cyan-400/40"
-                placeholder="Tell me about timelines, stack, and goals…"
+                placeholder="Tell me about timelines, stack, and goals..."
+                name="message"
+                required
               />
             </label>
             <button
@@ -80,6 +105,11 @@ function ContactNeural() {
             >
               Send message
             </button>
+            {status === 'sent' ? (
+              <p className="font-display text-xs text-cyan-200">
+                Opening your mail app with the message prepared.
+              </p>
+            ) : null}
           </motion.form>
 
           <motion.aside
@@ -100,6 +130,7 @@ function ContactNeural() {
                 { label: 'GitHub', href: 'https://github.com/Zeel555', ext: true },
                 { label: 'LinkedIn', href: 'https://www.linkedin.com/in/zeel-sadariya-1634b4283/', ext: true },
                 { label: 'Email', href: 'mailto:zeelsadariya@gmail.com', ext: false },
+                { label: 'Phone', href: 'tel:+919664665296', ext: false },
               ].map((link) => (
                 <a
                   key={link.label}
@@ -110,7 +141,7 @@ function ContactNeural() {
                 >
                   <span>{link.label}</span>
                   <span className="text-slate-500" aria-hidden>
-                    ↗
+                    -&gt;
                   </span>
                 </a>
               ))}

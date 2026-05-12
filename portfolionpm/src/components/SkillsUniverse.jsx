@@ -57,6 +57,19 @@ const CONNS = [
   { a: 'gsap', b: 'aws', w: 0.5 },
 ]
 
+import {
+  SiReact, SiNextdotjs, SiTailwindcss, SiFramer, SiTypescript,
+  SiNodedotjs, SiExpress, SiFastapi, SiPython, SiSocketdotio,
+  SiTensorflow, SiOpencv, SiScikitlearn, SiPandas, SiNumpy,
+  SiMongodb, SiPostgresql, SiFirebase, SiRedis,
+  SiGit, SiDocker, SiVercel, SiFigma, SiPostman, SiGithub
+} from 'react-icons/si'
+import { TbApi, TbBrandFramerMotion } from 'react-icons/tb'
+import { MdOutlineWaves } from 'react-icons/md'
+import { HiOutlineLightningBolt } from 'react-icons/hi'
+import { FaHtml5, FaCss3Alt } from 'react-icons/fa'
+import { VscCode } from 'react-icons/vsc'
+
 const STACK_TABS = [
   {
     id: 'frontend',
@@ -66,7 +79,16 @@ const STACK_TABS = [
     hoverBorder: 'rgba(6,182,212,0.5)',
     hoverBg: 'rgba(6,182,212,0.06)',
     hoverShadow: '0 0 20px rgba(6,182,212,0.1)',
-    skills: ['React', 'Next.js', 'Tailwind CSS', 'GSAP', 'Framer Motion', 'TypeScript', 'HTML5', 'CSS3'],
+    skills: [
+      { name: 'React', icon: <SiReact /> },
+      { name: 'Next.js', icon: <SiNextdotjs /> },
+      { name: 'Tailwind CSS', icon: <SiTailwindcss /> },
+      { name: 'GSAP', icon: <TbBrandFramerMotion /> },
+      { name: 'Framer Motion', icon: <SiFramer /> },
+      { name: 'TypeScript', icon: <SiTypescript /> },
+      { name: 'HTML5', icon: <FaHtml5 /> },
+      { name: 'CSS3', icon: <FaCss3Alt /> },
+    ],
   },
   {
     id: 'backend',
@@ -76,7 +98,15 @@ const STACK_TABS = [
     hoverBorder: 'rgba(124,58,237,0.5)',
     hoverBg: 'rgba(124,58,237,0.06)',
     hoverShadow: '0 0 20px rgba(124,58,237,0.1)',
-    skills: ['Node.js', 'Express.js', 'FastAPI', 'Python', 'REST APIs', 'WebSocket', 'Socket.io'],
+    skills: [
+      { name: 'Node.js', icon: <SiNodedotjs /> },
+      { name: 'Express.js', icon: <SiExpress /> },
+      { name: 'FastAPI', icon: <SiFastapi /> },
+      { name: 'Python', icon: <SiPython /> },
+      { name: 'REST APIs', icon: <TbApi /> },
+      { name: 'WebSocket', icon: <MdOutlineWaves /> },
+      { name: 'Socket.io', icon: <SiSocketdotio /> },
+    ],
   },
   {
     id: 'aiml',
@@ -86,7 +116,15 @@ const STACK_TABS = [
     hoverBorder: 'rgba(59,130,246,0.5)',
     hoverBg: 'rgba(59,130,246,0.06)',
     hoverShadow: '0 0 20px rgba(59,130,246,0.1)',
-    skills: ['TensorFlow', 'OpenCV', 'Mistral AI', 'Whisper', 'Scikit-learn', 'Pandas', 'NumPy'],
+    skills: [
+      { name: 'TensorFlow', icon: <SiTensorflow /> },
+      { name: 'OpenCV', icon: <SiOpencv /> },
+      { name: 'Mistral AI', icon: <HiOutlineLightningBolt /> },
+      { name: 'Whisper', icon: <HiOutlineLightningBolt /> },
+      { name: 'Scikit-learn', icon: <SiScikitlearn /> },
+      { name: 'Pandas', icon: <SiPandas /> },
+      { name: 'NumPy', icon: <SiNumpy /> },
+    ],
   },
   {
     id: 'database',
@@ -96,7 +134,12 @@ const STACK_TABS = [
     hoverBorder: 'rgba(16,185,129,0.5)',
     hoverBg: 'rgba(16,185,129,0.06)',
     hoverShadow: '0 0 20px rgba(16,185,129,0.1)',
-    skills: ['MongoDB', 'PostgreSQL', 'Firebase', 'Redis'],
+    skills: [
+      { name: 'MongoDB', icon: <SiMongodb /> },
+      { name: 'PostgreSQL', icon: <SiPostgresql /> },
+      { name: 'Firebase', icon: <SiFirebase /> },
+      { name: 'Redis', icon: <SiRedis /> },
+    ],
   },
   {
     id: 'tools',
@@ -106,7 +149,15 @@ const STACK_TABS = [
     hoverBorder: 'rgba(245,158,11,0.5)',
     hoverBg: 'rgba(245,158,11,0.06)',
     hoverShadow: '0 0 20px rgba(245,158,11,0.1)',
-    skills: ['Git', 'Docker', 'Vercel', 'Figma', 'Postman', 'VS Code', 'GitHub'],
+    skills: [
+      { name: 'Git', icon: <SiGit /> },
+      { name: 'Docker', icon: <SiDocker /> },
+      { name: 'Vercel', icon: <SiVercel /> },
+      { name: 'Figma', icon: <SiFigma /> },
+      { name: 'Postman', icon: <SiPostman /> },
+      { name: 'VS Code', icon: <VscCode /> },
+      { name: 'GitHub', icon: <SiGithub /> },
+    ],
   },
 ]
 
@@ -146,13 +197,13 @@ function SkillPill({ active, skill, index }) {
 
   return (
     <motion.span
-      key={skill}
+      key={skill.name}
       initial={{ opacity: 0, scale: 0.92 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ delay: index * 0.045, duration: 0.25 }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="relative overflow-hidden rounded-[10px] border px-[18px] py-3 font-display text-sm font-medium transition-all duration-200"
+      className="relative flex items-center gap-2 overflow-hidden rounded-[10px] border px-[18px] py-3 font-display text-sm font-medium transition-all duration-200"
       style={{
         background: isHovered ? active.hoverBg : 'rgba(255,255,255,0.02)',
         borderColor: isHovered ? active.hoverBorder : 'rgba(255,255,255,0.06)',
@@ -167,7 +218,10 @@ function SkillPill({ active, skill, index }) {
         animate={isHovered ? { x: ['-120%', '260%'] } : { x: '-120%' }}
         transition={{ duration: 0.5, ease: 'easeOut' }}
       />
-      <span className="relative z-10">{skill}</span>
+      <span className="relative z-10 shrink-0 text-lg opacity-80" style={{ color: isHovered ? active.hoverColor : 'inherit' }}>
+        {skill.icon}
+      </span>
+      <span className="relative z-10">{skill.name}</span>
     </motion.span>
   )
 }
@@ -518,27 +572,6 @@ export default function SkillsUniverse() {
           </p>
         </motion.div>
 
-        <motion.div
-          className="relative mx-auto mb-10 max-w-3xl text-center"
-          initial={shouldReduceMotion ? false : { opacity: 0, y: 18 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, ease: MOTION_EASE_STANDARD }}
-        >
-          <div className="font-display text-[clamp(3rem,8vw,4rem)] font-bold leading-none">
-            <span
-              style={{
-                background: 'linear-gradient(135deg, #7C3AED, #06B6D4)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}
-            >
-              30+ Technologies
-            </span>
-          </div>
-          <p className="mt-3 font-display text-base text-[#475569]">across the full stack</p>
-        </motion.div>
 
         <div className="text-center">
           <div className="inline-flex max-w-full flex-wrap justify-center gap-1 rounded-full border border-white/[0.06] bg-white/[0.02] p-1.5">

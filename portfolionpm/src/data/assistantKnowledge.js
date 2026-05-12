@@ -8,6 +8,7 @@ export const assistantPrompts = [
   'What is ISLR?',
   'Internship experience',
   'How can I contact him?',
+  'Show proof points',
 ]
 
 /**
@@ -26,8 +27,8 @@ Full name: Jeel Sadariya
 Email: zeelsadariya@gmail.com
 Phone: 9664665296
 Location: Rajkot, Gujarat, India
-GitHub: github.com/JeelSadariya
-LinkedIn: linkedin.com/in/JeelSadariya
+GitHub: github.com/Zeel555
+LinkedIn: linkedin.com/in/zeel-sadariya-1634b4283
 Role: Full Stack Developer & AI Engineer
 
 EDUCATION:
@@ -114,6 +115,12 @@ function mentionsJeelOrPortfolio(query) {
     'university',
     'placement',
     'hire',
+    'available',
+    'availability',
+    'proof',
+    'certification',
+    'certificate',
+    'achievement',
     'resume',
     'cv',
     'islr',
@@ -158,6 +165,10 @@ export function getNeuralCoreReply(rawInput) {
 
   if (query.includes('intern')) {
     return 'Jeel completed a Full Stack Development internship at OASIS INFOBYTE from May 2025 to June 2025, building React + Node + MongoDB features and REST APIs. He is currently pursuing B.Tech Information Technology at CHARUSAT.'
+  }
+
+  if (query.includes('proof') || query.includes('certification') || query.includes('certificate') || query.includes('achievement')) {
+    return 'Jeel backs the portfolio with an 8.20 CGPA, 150+ DSA problems, IBM Machine Learning certification, AWS Academy training, and multiple AI/full-stack builds. His project work spans realtime systems, RBAC, AI evaluation, computer vision, and production-style dashboards.'
   }
 
   if (query.includes('who') || query.includes('about jeel') || query.includes('tell me about')) {
