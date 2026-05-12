@@ -90,6 +90,7 @@ function NeuralCursor({ disabled = false, color = 'purple' }) {
     let activeHoverKind = 'default'
     let pulseTween = null
     let currentMagneticElement = null
+    let ringSpinTween = null
 
     gsap.set(dot, {
       x: mouse.x - defaultState.dotSize / 2,
@@ -114,7 +115,7 @@ function NeuralCursor({ disabled = false, color = 'purple' }) {
       height: defaultState.ringSize,
       opacity: 1,
       scale: defaultState.ringScale,
-      border: `1.5px solid ${hexToRgba(defaultState.ringBorderColor, defaultState.ringBorderOpacity)}`,
+      border: `1px solid ${hexToRgba(defaultState.ringBorderColor, defaultState.ringBorderOpacity)}`,
       borderColor: hexToRgba(defaultState.ringBorderColor, defaultState.ringBorderOpacity),
       borderRadius: '999px',
       backgroundColor: defaultState.ringBg,
@@ -128,10 +129,11 @@ function NeuralCursor({ disabled = false, color = 'purple' }) {
     gsap.set(label, {
       opacity: 0,
       color: defaultState.labelColor,
-      fontSize: '9px',
-      letterSpacing: '0.1em',
-      fontWeight: 600,
+      fontSize: '8px',
+      letterSpacing: '0.18em',
+      fontWeight: 400,
       textTransform: 'uppercase',
+      fontFamily: 'Space Grotesk, sans-serif',
     })
 
     const startPulse = () => {
@@ -153,6 +155,27 @@ function NeuralCursor({ disabled = false, color = 'purple' }) {
       }
       pulseTween.kill()
       pulseTween = null
+    }
+
+    const stopRingSpin = () => {
+      if (ringSpinTween) {
+        ringSpinTween.kill()
+        ringSpinTween = null
+      }
+      gsap.killTweensOf(ring, 'rotation')
+      gsap.set(ring, { rotation: 0 })
+    }
+
+    const startRingSpin = () => {
+      if (ringSpinTween) {
+        ringSpinTween.kill()
+      }
+      ringSpinTween = gsap.to(ring, {
+        rotation: 360,
+        duration: 8,
+        repeat: -1,
+        ease: 'none',
+      })
     }
 
     const applyState = (nextState, duration = 0.3) => {
@@ -212,6 +235,7 @@ function NeuralCursor({ disabled = false, color = 'purple' }) {
 
       if (hoverKind === 'default') {
         applyState(defaultState, 0.3)
+        stopRingSpin()
         startPulse()
         return
       }
@@ -223,15 +247,16 @@ function NeuralCursor({ disabled = false, color = 'purple' }) {
           {
             ...defaultState,
             dotScale: 0,
-            ringScale: 80 / 36,
+            ringScale: 60 / 36,
             ringBorderColor: '#7C3AED',
-            ringBg: 'rgba(124, 58, 237, 0.08)',
-            ringBorderOpacity: 1,
+            ringBg: 'rgba(124, 58, 237, 0.04)',
+            ringBorderOpacity: 0.5,
             label: 'OPEN',
             labelColor: '#7C3AED',
           },
           0.3,
         )
+        startRingSpin()
         return
       }
 
@@ -240,15 +265,16 @@ function NeuralCursor({ disabled = false, color = 'purple' }) {
           {
             ...defaultState,
             dotScale: 0,
-            ringScale: 64 / 36,
+            ringScale: 52 / 36,
             ringBorderColor: '#06B6D4',
-            ringBg: 'rgba(6, 182, 212, 0.06)',
-            ringBorderOpacity: 1,
+            ringBg: 'rgba(6, 182, 212, 0.04)',
+            ringBorderOpacity: 0.5,
             label: 'GO',
             labelColor: '#06B6D4',
           },
           0.3,
         )
+        startRingSpin()
         return
       }
 
@@ -257,19 +283,21 @@ function NeuralCursor({ disabled = false, color = 'purple' }) {
           {
             ...defaultState,
             dotScale: 0,
-            ringScale: 64 / 36,
+            ringScale: 52 / 36,
             ringBorderColor: '#06B6D4',
-            ringBg: 'rgba(6, 182, 212, 0.06)',
-            ringBorderOpacity: 1,
+            ringBg: 'rgba(6, 182, 212, 0.04)',
+            ringBorderOpacity: 0.5,
             label: 'VIEW',
             labelColor: '#06B6D4',
           },
           0.3,
         )
+        startRingSpin()
         return
       }
 
       if (hoverKind === 'text') {
+        stopRingSpin()
         applyState(textState, 0.2)
       }
     }
@@ -400,6 +428,7 @@ function NeuralCursor({ disabled = false, color = 'purple' }) {
       window.removeEventListener('mouseup', handleMouseUp)
 
       stopPulse()
+      stopRingSpin()
       resetMagnetic(currentMagneticElement)
       gsap.killTweensOf([dot, ring, label])
 

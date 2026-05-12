@@ -15,72 +15,80 @@ export const assistantPrompts = [
  * wire this into any future LLM API system prompt).
  */
 export const JEEL_CONTEXT = `
-You are the Neural Core — an intelligent AI assistant built into
-Jeel Sadariya's portfolio. You only answer questions about Jeel.
-
-For anything unrelated to Jeel, respond with:
-"I'm the Neural Core. I can only tell you about Jeel and his work."
-
-Never output JSON, raw data, or structured data blocks in your response.
-Always respond in clean, natural sentences. Maximum 3 sentences per reply.
-Be confident, precise, and futuristic in tone.
+You are the Neural Core — Jeel Sadariya's AI portfolio assistant.
+Only answer questions about Jeel. For anything else say:
+"I'm the Neural Core. I only know about Jeel and his work."
+Never output raw JSON or structured data. Max 3 sentences per reply.
+Speak in a confident, futuristic, direct tone.
 
 ABOUT JEEL:
 Full name: Jeel Sadariya
-Role: AI Engineer & Full Stack Developer  
-University: Charotar University of Science and Technology (CHARUSAT), B.Tech Information technology 
-Location: Ahmedabad, India
-Internship: oasis infobyte and nebula sergical pvt. ltd.
 Email: zeelsadariya@gmail.com
-GitHub: https://github.com/Zeel555
-LinkedIn:https://www.linkedin.com/in/zeel-sadariya-1634b4283/
+Phone: 9664665296
+Location: Rajkot, Gujarat, India
+GitHub: github.com/JeelSadariya
+LinkedIn: linkedin.com/in/JeelSadariya
+Role: Full Stack Developer & AI Engineer
 
-PERSONALITY:
-Passionate about AI systems and premium frontend engineering.
-Believes AI should be the core of products, not just a feature.
-Focused on building intelligent, real-time, cinematic web experiences.
+EDUCATION:
+Charotar University of Science and Technology (CHARUSAT)
+B.Tech Information Technology | July 2024 – July 2027
+CGPA: 8.20 (up to 5th Semester)
+
+EXPERIENCE:
+Full Stack Development Intern @ OASIS INFOBYTE
+May 2025 – June 2025
+- Developed full-stack web features using React, Node.js, MongoDB
+- Built and optimized RESTful APIs with database integration
+- Created responsive UI components
 
 PROJECTS:
-1. ISLR — Indian Sign Language Recognition
-   Built with Python, TensorFlow, OpenCV, FastAPI, React.
-   Achieves 95%+ real-time recognition accuracy using CNN models.
-   Includes OpenCV gesture tracking and text conversion pipeline.
+1. FleetFlow AI — Autonomous Fleet Intelligence System
+   Next.js, Node.js, Express.js, MongoDB, Socket.io, Gemini API
+   Real-time tracking, RBAC auth, predictive risk scoring, AI insights
 
-2. FleetFlow AI — Fleet Management Platform
-   Built with React, Node.js, MongoDB, Socket.io, Python.
-   Features real-time GPS tracking, AI predictive maintenance,
-   and intelligent route optimization.
+2. AI Interview System — AI-Powered Technical Interview Platform
+   React, Node.js, MongoDB, Python, FastAPI, Mistral via Ollama
+   Voice-based interviews, AI evaluation, microservice architecture
 
-3. AI Interview System — Voice AI Interview Platform
-   Built with React, Node.js, FastAPI, Mistral AI, Whisper.
-   Conducts voice-based technical interviews with AI evaluation
-   and candidate analytics dashboard.
+3. Pizza Delight — Scalable Food Ordering System
+   React, Node.js, Express.js, MongoDB, Razorpay
+   Custom pizza builder, JWT auth, payment gateway, admin dashboard
 
-4. RevoraX — Product Lifecycle Management
-   Built with React, Node.js, Express, MongoDB, JWT.
-   Enterprise-grade platform with RBAC, approval workflows,
-   change orders, and full audit trail compliance.
+4. ISLR — Indian Sign Language Recognition
+   Python, TensorFlow, Keras, OpenCV, NumPy
+   Real-time CNN-based recognition, gesture tracking, text conversion
+   Smart India Hackathon project
 
-5. Skill Swap — P2P Skill Exchange
-   Built with React, Node.js, MongoDB, Socket.io.
-   Peer-to-peer platform with skill matching, real-time messaging,
-   session scheduling, and rating system.
+5. RevoraX — Product Lifecycle Management
+   MERN Stack (React, Node.js, Express, MongoDB)
+   RBAC, approval workflows, audit trails, change management
 
 SKILLS:
-Frontend: React, Next.js, Tailwind CSS, GSAP, Framer Motion, TypeScript
-Backend: Node.js, Express.js, FastAPI, Python, REST APIs, WebSocket
-AI/ML: TensorFlow, OpenCV, Mistral AI, Whisper, Scikit-learn, Pandas
-Database: MongoDB, PostgreSQL, Firebase, Redis
-Tools: Git, Docker, Vercel, Figma, Postman
+Languages: Python, C/C++, JavaScript, SQL
+Frontend: React.js, Next.js, Tailwind CSS, GSAP, Framer Motion
+Backend: Node.js, Express.js, FastAPI
+Database: MongoDB, MySQL, PostgreSQL
+Tools: Git, Docker, AWS, Postman
+
+CERTIFICATIONS:
+- IBM Machine Learning Professional Certificate (Coursera, 2025)
+- Data Analysis Using Python — University of Pennsylvania (2025)
+- AWS Academy Graduate — Cloud Developing Training (2026)
+
+ACHIEVEMENTS:
+- CGPA: 8.20 at CHARUSAT
+- 150+ LeetCode problems solved
+- Smart India Hackathon participant (ISLR + RevoraX)
+- Odoo Hackathon participant
 
 AVAILABILITY:
-Actively seeking placement in frontend, fullstack, or AI engineering roles.
-Open to internships and full-time opportunities.
-Responds within 24 hours via email or LinkedIn.
+Seeking full-time or internship roles in full-stack,
+frontend, or AI engineering. Responds within 24 hours.
 `
 
 const OFF_TOPIC_REPLY =
-  "I'm the Neural Core. I can only tell you about Jeel and his work."
+  "I'm the Neural Core. I only know about Jeel and his work."
 
 function normalizeQuery(input) {
   return input.trim().toLowerCase()
@@ -91,6 +99,7 @@ function mentionsJeelOrPortfolio(query) {
     'jeel',
     'sadariya',
     'portfolio',
+    'projects',
     'neural',
     'project',
     'stack',
@@ -148,11 +157,11 @@ export function getNeuralCoreReply(rawInput) {
   }
 
   if (query.includes('intern')) {
-    return 'Jeel has interned at Oasis Infobyte and Nebula Surgical Pvt. Ltd., building real engineering exposure alongside his CHARUSAT studies. Ask about a specific stack if you want project-level detail.'
+    return 'Jeel completed a Full Stack Development internship at OASIS INFOBYTE from May 2025 to June 2025, building React + Node + MongoDB features and REST APIs. He is currently pursuing B.Tech Information Technology at CHARUSAT.'
   }
 
   if (query.includes('who') || query.includes('about jeel') || query.includes('tell me about')) {
-    return 'Jeel Sadariya is an AI engineer and full stack developer from Ahmedabad, studying Information Technology at CHARUSAT. He builds intelligent, real-time products where AI is the core, not a side feature.'
+    return 'Jeel Sadariya is a Full Stack Developer and AI Engineer from Rajkot, Gujarat, currently pursuing B.Tech Information Technology at CHARUSAT. He builds intelligent, real-time products where AI is the core, not just a feature.'
   }
 
   if (query.includes('skill') || query.includes('tech') || query.includes('stack') || query.includes('technology')) {
@@ -160,7 +169,7 @@ export function getNeuralCoreReply(rawInput) {
   }
 
   if (query.includes('project') || query.includes('show ai') || query.includes('portfolio work')) {
-    return 'Flagship builds include ISLR for sign language recognition, FleetFlow AI for fleet intelligence, a voice AI interview platform, enterprise RevoraX PLM, and Skill Swap for peer learning. Each pairs cinematic UI with serious system design.'
+    return 'Flagship builds include FleetFlow AI, AI Interview System, Pizza Delight, ISLR, and RevoraX. These projects combine full-stack architecture with practical AI integration and production-focused UX.'
   }
 
   if (query.includes('fleetflow')) {
@@ -180,7 +189,7 @@ export function getNeuralCoreReply(rawInput) {
   }
 
   if (query.includes('skill swap')) {
-    return 'Skill Swap is a peer-to-peer exchange built with React, Node.js, MongoDB, and Socket.io. It focuses on skill matching, live messaging, session scheduling, and trust signals like ratings.'
+    return 'Jeel’s portfolio currently highlights FleetFlow AI, AI Interview System, Pizza Delight, ISLR, and RevoraX. Ask for any of these by name and I can explain architecture and stack.'
   }
 
   if (query.includes('placement') || query.includes('hiring') || query.includes('job') || query.includes('opportunit')) {

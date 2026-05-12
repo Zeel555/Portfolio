@@ -1,10 +1,17 @@
 .hero-visual-shell {
   pointer-events: none;
   position: absolute;
-  right: 1.5rem;
-  top: 50%;
-  width: 20rem;
+  right: 1rem;
+  top: 48%;
+  width: 29rem;
   transform: translateY(-50%);
+  padding-bottom: 2.5rem;
+}
+
+.hero-neural-stage {
+  height: 27rem;
+  width: 27rem;
+  transform-style: preserve-3d;
 }
 
 .hero-title {
@@ -13,8 +20,14 @@
 
 @media (min-width: 1024px) {
   .hero-visual-shell {
-    right: 3rem;
-    width: 24rem;
+    right: 2rem;
+    width: 31rem;
+    padding-bottom: 3rem;
+  }
+
+  .hero-neural-stage {
+    height: 29rem;
+    width: 29rem;
   }
 }
 
@@ -37,7 +50,12 @@
   }
 
   .hero-visual-shell {
-    width: 19rem;
+    width: 24rem;
     top: 54%;
+  }
+
+  .hero-neural-stage {
+    height: 23rem;
+    width: 23rem;
   }
 }

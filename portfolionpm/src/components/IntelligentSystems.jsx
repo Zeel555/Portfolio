@@ -1,330 +1,231 @@
-import { useEffect, useRef } from 'react'
-import { motion, useReducedMotion } from 'framer-motion'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { MOTION_DURATION, MOTION_EASE_STANDARD } from '../lib/motionTokens'
-
-gsap.registerPlugin(ScrollTrigger)
+import { motion } from 'framer-motion'
 
 const projects = [
   {
+    id: 1,
+    system: 'SYSTEM 01',
+    category: 'AI / COMPUTER VISION',
+    categoryColor: '#3B82F6',
     name: 'ISLR',
-    title: 'Indian Sign Language Recognition System',
-    category: 'AI / Computer Vision',
-    signal: 'Vision model',
+    subtitle: 'Indian Sign Language Recognition System',
+    metric: '95%+ recognition accuracy · Real-time inference',
+    description:
+      'Machine learning system for real-time recognition of Indian Sign Language gestures using CNN deep learning and computer vision. Converts sign language gestures into readable text, bridging the communication gap for hearing-impaired individuals.',
     features: [
-      'Real-time sign language recognition',
-      'CNN deep learning model',
-      'OpenCV gesture tracking',
-      'Text conversion system',
-      'High-accuracy evaluation',
+      'Real-time gesture capture and recognition',
+      'CNN model for accurate gesture prediction',
+      'Custom dataset collection and preprocessing',
+      'Convert gestures into readable text output',
+      'High accuracy model evaluation and testing',
     ],
-    tech: ['Python', 'TensorFlow', 'Keras', 'OpenCV', 'NumPy', 'Pandas'],
+    tech: ['Python', 'TensorFlow', 'Keras', 'OpenCV', 'NumPy'],
+    github: 'YOUR_GITHUB_LINK',
+    demo: '',
+    image: null,
   },
   {
+    id: 2,
+    system: 'SYSTEM 02',
+    category: 'FULL STACK SAAS + AI',
+    categoryColor: '#7C3AED',
     name: 'FleetFlow AI',
-    title: 'Autonomous Fleet Intelligence Platform',
-    category: 'Full Stack SaaS + AI',
-    signal: 'Logistics intelligence',
+    subtitle: 'Autonomous Fleet Intelligence Platform',
+    metric: 'Real-time tracking · AI predictive maintenance',
+    description:
+      'AI-powered Fleet & Logistics Management System with real-time updates, predictive risk scoring, and Gemini API integration. Features JWT/RBAC auth, vehicle registry with ROI tracking, and full trip lifecycle management.',
     features: [
-      'AI-powered logistics intelligence',
-      'Predictive risk analysis',
-      'RBAC system',
-      'Real-time Socket.io updates',
-      'Analytics dashboards',
-      'Gemini AI integration',
+      'JWT & RBAC with 4 role types (Manager, Dispatcher, Safety, Financial)',
+      'Real-time vehicle & driver tracking via Socket.io',
+      'Predictive risk scoring with Gemini AI integration',
+      'Full trip lifecycle — create, dispatch, complete',
+      'CSV/PDF export & ROI calculation per vehicle',
     ],
-    tech: [
-      'Next.js',
-      'TypeScript',
-      'Tailwind',
-      'Node.js',
-      'Express.js',
-      'MongoDB',
-      'Socket.io',
-      'Gemini API',
-    ],
+    tech: ['Next.js', 'TypeScript', 'Node.js', 'MongoDB', 'Socket.io'],
+    github: 'YOUR_GITHUB_LINK',
+    demo: '',
+    image: null,
   },
   {
+    id: 3,
+    system: 'SYSTEM 03',
+    category: 'AI / INTERVIEW TECH',
+    categoryColor: '#06B6D4',
     name: 'AI Interview System',
-    title: 'AI-Powered Technical Interview System',
-    category: 'AI + LLM Systems',
-    signal: 'Conversational engine',
+    subtitle: 'AI-Powered Technical Interview & Evaluation',
+    metric: 'Voice-based · Mistral AI evaluation · Microservices',
+    description:
+      'AI-driven interview platform using React, Node.js, FastAPI with local LLM (Mistral via Ollama). Designed microservice architecture for question generation, evaluation, and speech-to-text processing with performance analytics.',
     features: [
-      'AI-generated interviews',
-      'Voice-based interview flow',
-      'Whisper speech-to-text',
-      'Local LLM integration',
+      'AI-generated technical interview questions',
+      'Voice-based interview flow with Whisper STT',
+      'Mistral AI answer evaluation and scoring',
+      'Microservice architecture (FastAPI + Node.js)',
       'Candidate analytics dashboard',
-      'Coding interview simulation',
     ],
-    tech: [
-      'React',
-      'Node.js',
-      'FastAPI',
-      'MongoDB',
-      'Python',
-      'Ollama',
-      'Whisper',
-      'Mistral',
-    ],
+    tech: ['React', 'Node.js', 'FastAPI', 'Python', 'Mistral'],
+    github: 'YOUR_GITHUB_LINK',
+    demo: '',
+    image: null,
   },
   {
+    id: 4,
+    system: 'SYSTEM 04',
+    category: 'FULL STACK / PLM',
+    categoryColor: '#7C3AED',
     name: 'RevoraX',
-    title: 'Product Lifecycle & Change Management',
-    category: 'Enterprise Full Stack System',
-    signal: 'Enterprise control',
+    subtitle: 'Product Lifecycle & Change Management',
+    metric: 'Multi-tenant · 4 roles · Full audit trail',
+    description:
+      'Multi-tenant PLM web app for managing Products, Bills of Materials, and Engineering Change Orders with approval workflows, versioning, audit trails, and role-based access control.',
     features: [
-      'PLM workflow system',
-      'ECO approval flow',
-      'Audit logging',
-      'Role-based access control',
-      'Product version management',
-      'Enterprise dashboards',
+      'Multi-tenant with 4 roles: Engineering, Approver, Operations, Admin',
+      'ECO approval workflow (New → Approval → Done)',
+      'Version-controlled Products and Bills of Materials',
+      'Full audit trail and traceability for compliance',
+      'Configurable ECO stages via Settings dashboard',
     ],
-    tech: ['React', 'Vite', 'Express.js', 'MongoDB', 'JWT'],
+    tech: ['React', 'Vite', 'Express', 'MongoDB', 'JWT'],
+    github: 'YOUR_GITHUB_LINK',
+    demo: '',
+    image: null,
   },
   {
+    id: 5,
+    system: 'SYSTEM 05',
+    category: 'FULL STACK / MERN',
+    categoryColor: '#10B981',
     name: 'Pizza Delight',
-    title: 'Full Stack E-Commerce Platform',
-    category: 'Full Stack E-Commerce Platform',
-    signal: 'Commerce system',
+    subtitle: 'Scalable Food Ordering System',
+    metric: 'Razorpay integrated · JWT auth · Admin dashboard',
+    description:
+      'Full-stack pizza ordering system using React, Node.js, Express, MongoDB with JWT authentication. Custom pizza builder with dynamic pricing, Razorpay payment gateway, and admin dashboard for order and inventory management.',
     features: [
-      'Custom pizza builder',
-      'Dynamic pricing',
-      'Admin dashboard',
-      'Inventory management',
-      'Razorpay integration',
-      'JWT authentication',
+      'Custom pizza builder with dynamic pricing',
+      'JWT-based authentication system',
+      'Razorpay payment gateway integration',
+      'Admin dashboard for order management',
+      'Fully responsive UI design',
     ],
-    tech: ['React', 'Node.js', 'Express.js', 'MongoDB', 'Razorpay'],
-  },
-  {
-    name: 'Skill Swap',
-    title: 'Real-Time Full Stack Platform',
-    category: 'Real-Time Full Stack Platform',
-    signal: 'Matching network',
-    features: [
-      'Skill exchange system',
-      'Real-time Socket.io chat',
-      'Notifications',
-      'Matching system',
-      'Authentication & security',
-      'Admin controls',
-    ],
-    tech: ['Node.js', 'Express.js', 'MongoDB', 'Socket.io'],
+    tech: ['React', 'Node.js', 'Express.js', 'MongoDB'],
+    github: 'YOUR_GITHUB_LINK',
+    demo: '',
+    image: null,
   },
 ]
 
-const revealMotion = {
-  hidden: { opacity: 0, y: 34, filter: 'blur(10px)' },
-  visible: {
-    opacity: 1,
-    y: 0,
-    filter: 'blur(0px)',
-    transition: { duration: MOTION_DURATION.reveal, ease: MOTION_EASE_STANDARD },
-  },
-}
-
-function ProjectVisual({ project, index }) {
-  const shouldReduceMotion = useReducedMotion()
-
+function CategoryIcon({ color }) {
   return (
-    <motion.div
-      className="relative min-h-72 overflow-hidden rounded-3xl border border-white/10 bg-slate-950/55 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-xl sm:min-h-80 sm:p-5"
-      whileHover={
-        shouldReduceMotion
-          ? undefined
-          : { rotateX: 1.3, rotateY: index % 2 === 0 ? -1.3 : 1.3, scale: 1.008 }
-      }
-      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-    >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_35%_25%,rgba(6,182,212,0.18),transparent_34%),radial-gradient(circle_at_78%_70%,rgba(124,58,237,0.16),transparent_30%)]" />
-      <motion.div
-        aria-hidden="true"
-        className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-cyan-200/10 to-transparent"
-        animate={shouldReduceMotion ? undefined : { y: ['-30%', '310%'] }}
-        transition={{
-          delay: index * 0.35,
-          duration: 8,
-          ease: 'linear',
-          repeat: Infinity,
-        }}
-      />
-
-      <div className="relative h-full rounded-2xl border border-cyan-200/10 bg-slate-950/35 p-4 sm:p-5">
-        <div className="flex items-center justify-between text-[0.68rem] uppercase tracking-[0.18em] text-cyan-100/70 sm:text-xs sm:tracking-[0.22em]">
-          <span>{project.signal}</span>
-          <span>0{index + 1}</span>
-        </div>
-
-        <div className="mt-8 grid place-items-center">
-          <motion.div
-            className="relative h-36 w-36 rounded-full border border-cyan-100/25 sm:h-44 sm:w-44"
-            animate={shouldReduceMotion ? undefined : { rotate: 360 }}
-            transition={{ duration: 42, ease: 'linear', repeat: Infinity }}
-          >
-            <div className="absolute inset-7 rounded-full border border-violet-200/20" />
-            <div className="absolute inset-16 rounded-full bg-cyan-300/15 blur-xl" />
-            <div className="absolute left-6 top-12 h-2.5 w-2.5 rounded-full bg-cyan-200 shadow-[0_0_20px_rgba(6,182,212,0.75)]" />
-            <div className="absolute bottom-8 right-5 h-3.5 w-3.5 rounded-full bg-violet-300 shadow-[0_0_22px_rgba(124,58,237,0.75)]" />
-            <div className="absolute right-10 top-2 h-2 w-2 rounded-full bg-blue-300 shadow-[0_0_18px_rgba(59,130,246,0.75)]" />
-          </motion.div>
-        </div>
-
-        <div className="absolute bottom-4 left-4 right-4 rounded-2xl border border-white/10 bg-white/[0.035] p-3 sm:bottom-5 sm:left-5 sm:right-5 sm:p-4">
-          <div className="mb-3 h-px bg-gradient-to-r from-cyan-300/0 via-cyan-200/50 to-violet-300/0" />
-          <div className="grid grid-cols-3 gap-2">
-            {[64, 82, 47].map((value) => (
-              <div
-                className="rounded-xl border border-white/10 bg-slate-950/45 p-2 text-center sm:p-3"
-                key={value}
-              >
-                <div className="text-base font-semibold text-white sm:text-lg">{value}%</div>
-                <div className="text-[0.58rem] uppercase tracking-[0.14em] text-slate-500 sm:text-[0.62rem] sm:tracking-[0.18em]">
-                  signal
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </motion.div>
+    <svg aria-hidden="true" className="h-5 w-5" fill="none" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="8" stroke={color} strokeOpacity="0.7" strokeWidth="1.4" />
+      <path d="M12 4v4M12 16v4M4 12h4M16 12h4" stroke={color} strokeLinecap="round" strokeWidth="1.4" />
+      <circle cx="12" cy="12" r="2.5" fill={color} fillOpacity="0.55" />
+    </svg>
   )
 }
 
-function ProjectShowcase({ project, index }) {
-  const isReversed = index % 2 === 1
-
+function CircuitDecoration({ color }) {
   return (
-    <motion.article
-      className="project-card system-card group relative grid gap-6 rounded-[1.5rem] border border-white/10 bg-slate-950/55 p-3 shadow-[0_20px_76px_rgba(2,8,23,0.38)] backdrop-blur-xl transition duration-500 hover:border-cyan-200/24 hover:shadow-[0_22px_88px_rgba(6,182,212,0.09)] sm:rounded-[2rem] sm:p-4 md:p-5 lg:grid-cols-2 lg:gap-10"
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: '-18% 0px -18% 0px' }}
-      variants={revealMotion}
+    <svg aria-hidden="true" className="absolute right-4 top-4 h-24 w-24 opacity-[0.18]" viewBox="0 0 96 96">
+      <path d="M12 28 H38 V48 H64 V70 H84" fill="none" stroke={color} strokeWidth="1" />
+      <path d="M18 76 C36 50 52 46 82 22" fill="none" stroke="#06B6D4" strokeOpacity="0.75" strokeWidth="1" />
+      <circle cx="12" cy="28" r="3" fill={color} />
+      <circle cx="64" cy="48" r="3" fill="#06B6D4" />
+      <circle cx="84" cy="70" r="3" fill={color} />
+    </svg>
+  )
+}
+
+function ProjectCard({ index, onClick, project }) {
+  return (
+    <motion.button
+      type="button"
+      className="project-card group relative mx-auto w-full max-w-[380px] cursor-pointer overflow-hidden rounded-2xl border border-white/[0.06] bg-[rgba(13,18,36,0.8)] text-left transition duration-300 hover:-translate-y-1.5 hover:border-violet-500/35 hover:shadow-[0_20px_60px_rgba(124,58,237,0.12)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-200"
+      onClick={() => onClick(project)}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      aria-label={`Open ${project.name} project details`}
     >
-      <div className="absolute inset-0 rounded-[2rem] bg-gradient-to-br from-cyan-300/[0.045] via-transparent to-violet-400/[0.055] opacity-0 transition duration-500 group-hover:opacity-100" />
-
-      <div className={isReversed ? 'lg:order-2' : ''}>
-        <ProjectVisual index={index} project={project} />
-      </div>
-
-      <div className="relative flex flex-col justify-center p-2 sm:p-3 md:p-5">
-        <div className="mb-5 flex flex-wrap items-center gap-3">
-          <span className="rounded-full border border-cyan-200/20 bg-cyan-200/8 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-cyan-100 sm:text-xs sm:tracking-[0.2em]">
+      <div className="relative h-[200px] overflow-hidden bg-[rgba(7,11,25,0.9)]">
+        <div
+          className="absolute left-1/2 top-1/2 h-32 w-32 -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"
+          style={{ backgroundColor: `${project.categoryColor}55` }}
+        />
+        <CircuitDecoration color={project.categoryColor} />
+        <div className="absolute left-4 top-4 flex items-center gap-2">
+          <span className="grid h-9 w-9 place-items-center rounded-xl border border-white/10 bg-white/[0.035]">
+            <CategoryIcon color={project.categoryColor} />
+          </span>
+          <span
+            className="rounded-full border px-3 py-1 font-display text-[10px] font-medium uppercase tracking-[0.12em] text-slate-200"
+            style={{
+              borderColor: `${project.categoryColor}55`,
+              backgroundColor: `${project.categoryColor}18`,
+            }}
+          >
             {project.category}
           </span>
-          <span className="text-[0.68rem] uppercase tracking-[0.18em] text-slate-500 sm:text-xs sm:tracking-[0.22em]">
-            System 0{index + 1}
-          </span>
         </div>
+        <div className="absolute bottom-3 left-4 font-display text-[72px] font-extrabold leading-none text-white/[0.05]">
+          {project.name}
+        </div>
+      </div>
 
-        <h3 className="max-w-xl text-2xl font-medium leading-tight text-white sm:text-3xl md:text-4xl">
+      <div className="p-5">
+        <p className="font-display text-[10px] uppercase tracking-[0.15em] text-slate-600">
+          {project.system}
+        </p>
+        <h3 className="mt-2 font-display text-[22px] font-bold leading-tight text-slate-100">
           {project.name}
         </h3>
-        <p className="mt-3 max-w-xl text-base leading-7 text-slate-300">
-          {project.title}
+        <p className="mb-3 mt-2 font-display text-[13px] leading-5 text-slate-400">
+          {project.subtitle}
         </p>
-
-        <div className="mt-6 grid gap-3 sm:mt-7 sm:grid-cols-2">
-          {project.features.map((feature) => (
-            <div
-              className="flex gap-3 rounded-2xl border border-white/10 bg-white/[0.025] p-3 text-sm leading-6 text-slate-300"
-              key={feature}
-            >
-              <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-cyan-200 shadow-[0_0_12px_rgba(6,182,212,0.75)]" />
-              {feature}
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-7 flex flex-wrap gap-2">
-          {project.tech.map((tech) => (
+        <p className="font-display text-xs font-medium leading-5 text-cyan-400">
+          {project.metric}
+        </p>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {project.tech.slice(0, 3).map((tech) => (
             <span
-              className="rounded-full border border-violet-200/15 bg-violet-200/[0.045] px-3 py-1.5 text-xs font-medium text-slate-300"
+              className="rounded-md border border-white/[0.08] bg-white/[0.035] px-2.5 py-1 font-display text-[11px] text-slate-400"
               key={tech}
             >
               {tech}
             </span>
           ))}
         </div>
-
-        <div className="mt-8 flex flex-wrap gap-3">
-          {['View Project', 'GitHub', 'Live Demo'].map((label, actionIndex) => (
-            <a
-              aria-label={`${label} for ${project.name}`}
-              className={`min-h-11 rounded-full border px-5 py-3 text-center text-sm font-semibold transition duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-200 max-sm:w-full ${
-                actionIndex === 0
-                  ? 'border-cyan-200/60 bg-cyan-200 text-slate-950 hover:bg-cyan-100'
-                  : 'border-white/15 bg-white/[0.035] text-slate-100 hover:border-cyan-200/40 hover:bg-white/[0.065]'
-              }`}
-              href="#contact"
-              key={label}
-            >
-              {label}
-            </a>
-          ))}
-        </div>
+        <p className="mt-3 font-display text-xs font-semibold text-violet-400">
+          View System →
+        </p>
       </div>
-    </motion.article>
+    </motion.button>
   )
 }
 
-function IntelligentSystems() {
-  const sectionRef = useRef(null)
-  const shouldReduceMotion = useReducedMotion()
-
-  useEffect(() => {
-    if (shouldReduceMotion || !sectionRef.current) {
-      return undefined
-    }
-
-    const context = gsap.context(() => {
-      gsap.fromTo(
-        '.systems-orbit',
-        { yPercent: -8, opacity: 0.45 },
-        {
-          yPercent: 8,
-          opacity: 0.75,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            scrub: 1.2,
-            start: 'top bottom',
-            end: 'bottom top',
-          },
-        },
-      )
-    }, sectionRef)
-
-    return () => context.revert()
-  }, [shouldReduceMotion])
-
+function IntelligentSystems({ onProjectClick }) {
   return (
     <section
       className="relative isolate overflow-hidden px-4 py-20 text-slate-100 sm:px-8 sm:py-24 lg:px-12 lg:py-28"
-      id="systems"
-      ref={sectionRef}
+      id="projects"
     >
       <div className="pointer-events-none absolute inset-x-0 top-[-1px] z-20 h-24 bg-gradient-to-b from-[#020817] via-[#020817]/70 to-transparent" />
       <div className="absolute inset-0 -z-10 bg-[#020817]/92" />
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_50%_0%,rgba(6,182,212,0.09),transparent_32%),linear-gradient(180deg,#020817_0%,rgba(2,8,23,0.94)_45%,#020817_100%)]" />
-      <div className="systems-orbit pointer-events-none absolute right-[-10rem] top-28 -z-10 h-72 w-72 rounded-full border border-cyan-200/12 bg-cyan-300/5 blur-2xl sm:h-80 sm:w-80" />
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_50%_0%,rgba(6,182,212,0.08),transparent_32%),linear-gradient(180deg,#020817_0%,rgba(2,8,23,0.94)_45%,#020817_100%)]" />
 
       <div className="mx-auto max-w-7xl">
         <motion.div
-          className="mb-16 max-w-4xl"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-12% 0px' }}
-          variants={revealMotion}
+          className="mb-14 max-w-4xl"
+          initial={{ opacity: 0, y: 26, filter: 'blur(8px)' }}
+          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.72, ease: [0.22, 1, 0.36, 1] }}
         >
-          <div className="mb-5 inline-flex rounded-full border border-violet-200/20 bg-white/[0.035] px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-cyan-100 backdrop-blur-xl">
-            Core showcase
+          <div className="mb-5 inline-flex rounded-full border border-violet-200/20 bg-white/[0.035] px-4 py-2 text-xs font-medium tracking-[0.12em] text-cyan-100 backdrop-blur-xl">
+            Portfolio spotlight
           </div>
           <h2
-            className="font-medium leading-none text-white"
+            className="font-display font-medium leading-none text-white"
             style={{ fontSize: 'clamp(2.5rem, 7vw, 7rem)' }}
           >
             Intelligent Systems
@@ -335,9 +236,14 @@ function IntelligentSystems() {
           </p>
         </motion.div>
 
-        <div className="space-y-10 lg:space-y-14">
+        <div className="grid justify-items-center gap-6 md:grid-cols-2 xl:grid-cols-3">
           {projects.map((project, index) => (
-            <ProjectShowcase index={index} key={project.name} project={project} />
+            <ProjectCard
+              index={index}
+              key={project.id}
+              onClick={onProjectClick}
+              project={project}
+            />
           ))}
         </div>
       </div>

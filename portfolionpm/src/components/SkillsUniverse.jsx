@@ -1,46 +1,122 @@
-import { useEffect, useMemo, useRef } from 'react'
-import { motion, useReducedMotion } from 'framer-motion'
+import { useEffect, useRef, useState } from 'react'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { MOTION_DURATION, MOTION_EASE_STANDARD } from '../lib/motionTokens'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const skillCategories = [
+const PI2 = Math.PI * 2
+
+const NODES = [
+  { id: 'js', lb: 'JavaScript', col: '#F7DF1E', layer: 0, z: 0.95, imp: 1.0 },
+  { id: 'py', lb: 'Python', col: '#4B8EF1', layer: 0, z: 0.85, imp: 1.0 },
+  { id: 'ts', lb: 'TypeScript', col: '#A78BFA', layer: 0, z: 0.75, imp: 0.8 },
+  { id: 'react', lb: 'React', col: '#06B6D4', layer: 1, z: 0.9, imp: 1.0 },
+  { id: 'next', lb: 'Next.js', col: '#e2e8f0', layer: 1, z: 0.7, imp: 0.85 },
+  { id: 'node', lb: 'Node.js', col: '#6EBF4A', layer: 1, z: 0.88, imp: 1.0 },
+  { id: 'expr', lb: 'Express', col: '#94A3B8', layer: 1, z: 0.6, imp: 0.7 },
+  { id: 'tf', lb: 'TensorFlow', col: '#FF6F00', layer: 1, z: 0.85, imp: 1.0 },
+  { id: 'fast', lb: 'FastAPI', col: '#00BFA5', layer: 1, z: 0.72, imp: 0.8 },
+  { id: 'gsap', lb: 'GSAP', col: '#7C3AED', layer: 1, z: 0.65, imp: 0.75 },
+  { id: 'mongo', lb: 'MongoDB', col: '#10B981', layer: 2, z: 0.88, imp: 1.0 },
+  { id: 'pg', lb: 'PostgreSQL', col: '#4A90D9', layer: 2, z: 0.78, imp: 0.9 },
+  { id: 'aws', lb: 'AWS', col: '#FF9900', layer: 2, z: 0.82, imp: 0.9 },
+  { id: 'docker', lb: 'Docker', col: '#2496ED', layer: 2, z: 0.72, imp: 0.85 },
+  { id: 'redis', lb: 'Redis', col: '#E53E3E', layer: 2, z: 0.62, imp: 0.7 },
+]
+
+const CONNS = [
+  { a: 'js', b: 'react', w: 1.0 },
+  { a: 'js', b: 'next', w: 0.8 },
+  { a: 'js', b: 'node', w: 1.0 },
+  { a: 'js', b: 'expr', w: 0.7 },
+  { a: 'js', b: 'gsap', w: 0.8 },
+  { a: 'py', b: 'tf', w: 1.0 },
+  { a: 'py', b: 'fast', w: 0.85 },
+  { a: 'ts', b: 'react', w: 0.9 },
+  { a: 'ts', b: 'next', w: 0.85 },
+  { a: 'ts', b: 'node', w: 0.8 },
+  { a: 'react', b: 'mongo', w: 0.8 },
+  { a: 'react', b: 'pg', w: 0.7 },
+  { a: 'next', b: 'mongo', w: 0.8 },
+  { a: 'next', b: 'pg', w: 0.75 },
+  { a: 'next', b: 'redis', w: 0.6 },
+  { a: 'node', b: 'mongo', w: 1.0 },
+  { a: 'node', b: 'pg', w: 0.8 },
+  { a: 'node', b: 'aws', w: 0.85 },
+  { a: 'node', b: 'docker', w: 0.8 },
+  { a: 'node', b: 'redis', w: 0.75 },
+  { a: 'expr', b: 'mongo', w: 0.85 },
+  { a: 'expr', b: 'pg', w: 0.75 },
+  { a: 'tf', b: 'aws', w: 0.9 },
+  { a: 'tf', b: 'docker', w: 0.85 },
+  { a: 'fast', b: 'pg', w: 0.85 },
+  { a: 'fast', b: 'mongo', w: 0.8 },
+  { a: 'fast', b: 'docker', w: 0.75 },
+  { a: 'gsap', b: 'aws', w: 0.5 },
+]
+
+const STACK_TABS = [
   {
-    name: 'Frontend',
-    technologies: ['React', 'Next.js', 'Tailwind CSS', 'JavaScript', 'TypeScript', 'Vite', 'GSAP', 'Framer Motion'],
+    id: 'frontend',
+    label: 'Frontend',
+    atmosphere: 'rgba(6,182,212,0.04)',
+    hoverColor: '#06B6D4',
+    hoverBorder: 'rgba(6,182,212,0.5)',
+    hoverBg: 'rgba(6,182,212,0.06)',
+    hoverShadow: '0 0 20px rgba(6,182,212,0.1)',
+    skills: ['React', 'Next.js', 'Tailwind CSS', 'GSAP', 'Framer Motion', 'TypeScript', 'HTML5', 'CSS3'],
   },
   {
-    name: 'Backend',
-    technologies: ['Node.js', 'Express.js', 'FastAPI', 'Socket.io'],
+    id: 'backend',
+    label: 'Backend',
+    atmosphere: 'rgba(124,58,237,0.04)',
+    hoverColor: '#A78BFA',
+    hoverBorder: 'rgba(124,58,237,0.5)',
+    hoverBg: 'rgba(124,58,237,0.06)',
+    hoverShadow: '0 0 20px rgba(124,58,237,0.1)',
+    skills: ['Node.js', 'Express.js', 'FastAPI', 'Python', 'REST APIs', 'WebSocket', 'Socket.io'],
   },
   {
-    name: 'AI / Machine Learning',
-    technologies: ['Python', 'TensorFlow', 'OpenCV'],
+    id: 'aiml',
+    label: 'AI/ML',
+    atmosphere: 'rgba(59,130,246,0.04)',
+    hoverColor: '#60A5FA',
+    hoverBorder: 'rgba(59,130,246,0.5)',
+    hoverBg: 'rgba(59,130,246,0.06)',
+    hoverShadow: '0 0 20px rgba(59,130,246,0.1)',
+    skills: ['TensorFlow', 'OpenCV', 'Mistral AI', 'Whisper', 'Scikit-learn', 'Pandas', 'NumPy'],
   },
   {
-    name: 'Cloud & DevOps',
-    technologies: ['Docker', 'AWS'],
+    id: 'database',
+    label: 'Database',
+    atmosphere: 'rgba(16,185,129,0.04)',
+    hoverColor: '#34D399',
+    hoverBorder: 'rgba(16,185,129,0.5)',
+    hoverBg: 'rgba(16,185,129,0.06)',
+    hoverShadow: '0 0 20px rgba(16,185,129,0.1)',
+    skills: ['MongoDB', 'PostgreSQL', 'Firebase', 'Redis'],
   },
   {
-    name: 'Databases',
-    technologies: ['MongoDB', 'PostgreSQL'],
-  },
-  {
-    name: 'Tools & Workflow',
-    technologies: ['Git', 'GitHub', 'Postman', 'Razorpay'],
+    id: 'tools',
+    label: 'Tools',
+    atmosphere: 'rgba(245,158,11,0.04)',
+    hoverColor: '#FCD34D',
+    hoverBorder: 'rgba(245,158,11,0.5)',
+    hoverBg: 'rgba(245,158,11,0.06)',
+    hoverShadow: '0 0 20px rgba(245,158,11,0.1)',
+    skills: ['Git', 'Docker', 'Vercel', 'Figma', 'Postman', 'VS Code', 'GitHub'],
   },
 ]
 
-const floatingNodes = [
-  { label: 'React', x: 80, y: 114.4, delay: 0.2 },
-  { label: 'Node.js', x: 180, y: 353.6, delay: 0.7 },
-  { label: 'TensorFlow', x: 440, y: 83.2, delay: 0.4 },
-  { label: 'FastAPI', x: 580, y: 384.8, delay: 0.9 },
-  { label: 'Docker', x: 760, y: 166.4, delay: 0.5 },
-  { label: 'MongoDB', x: 860, y: 322.4, delay: 1.1 },
-]
+function getVC() {
+  return CONNS
+}
+
+function nd(id) {
+  return NODES.find((n) => n.id === id)
+}
 
 const revealVariant = {
   hidden: { opacity: 0, y: 26, filter: 'blur(8px)' },
@@ -52,19 +128,72 @@ const revealVariant = {
   },
 }
 
-function SkillsUniverse() {
-  const sectionRef = useRef(null)
+function FloatingOrb({ className, delay = 0 }) {
   const shouldReduceMotion = useReducedMotion()
-  const links = useMemo(
-    () => [
-      [80, 114.4, 440, 83.2],
-      [440, 83.2, 760, 166.4],
-      [180, 353.6, 580, 384.8],
-      [580, 384.8, 860, 322.4],
-      [440, 83.2, 580, 384.8],
-    ],
-    [],
+
+  return (
+    <motion.div
+      aria-hidden="true"
+      className={className}
+      animate={shouldReduceMotion ? undefined : { y: [0, -14, 0], opacity: [0.04, 0.065, 0.04] }}
+      transition={{ delay, duration: 12, ease: 'easeInOut', repeat: Infinity }}
+    />
   )
+}
+
+function SkillPill({ active, skill, index }) {
+  const [isHovered, setIsHovered] = useState(false)
+
+  return (
+    <motion.span
+      key={skill}
+      initial={{ opacity: 0, scale: 0.92 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ delay: index * 0.045, duration: 0.25 }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="relative overflow-hidden rounded-[10px] border px-[18px] py-3 font-display text-sm font-medium transition-all duration-200"
+      style={{
+        background: isHovered ? active.hoverBg : 'rgba(255,255,255,0.02)',
+        borderColor: isHovered ? active.hoverBorder : 'rgba(255,255,255,0.06)',
+        boxShadow: isHovered ? active.hoverShadow : 'none',
+        color: isHovered ? active.hoverColor : '#94A3B8',
+      }}
+    >
+      <motion.span
+        aria-hidden="true"
+        className="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-transparent via-white/[0.04] to-transparent"
+        initial={false}
+        animate={isHovered ? { x: ['-120%', '260%'] } : { x: '-120%' }}
+        transition={{ duration: 0.5, ease: 'easeOut' }}
+      />
+      <span className="relative z-10">{skill}</span>
+    </motion.span>
+  )
+}
+
+export default function SkillsUniverse() {
+  const sectionRef = useRef(null)
+  const canvasRef = useRef(null)
+  const animRef = useRef(null)
+  const stateRef = useRef({ hov: null, pulses: [], frame: 0 })
+  const shouldReduceMotion = useReducedMotion()
+  const [activeStackTab, setActiveStackTab] = useState('frontend')
+
+  const activeStack = STACK_TABS.find((t) => t.id === activeStackTab) || STACK_TABS[0]
+
+  useEffect(() => {
+    NODES.forEach((n) => {
+      if (n.driftT === undefined) {
+        n.driftT = Math.random() * PI2
+        n.driftS = 0.28 + Math.random() * 0.32
+        n.driftA = 2.5 + Math.random() * 4
+        n.ox = 0
+        n.oy = 0
+        n.pulse = Math.random() * PI2
+      }
+    })
+  }, [])
 
   useEffect(() => {
     if (shouldReduceMotion || !sectionRef.current) {
@@ -73,23 +202,12 @@ function SkillsUniverse() {
 
     const context = gsap.context(() => {
       gsap.to('.skills-universe-glow', {
-        yPercent: 10,
-        opacity: 0.9,
+        yPercent: 8,
+        opacity: 0.82,
         ease: 'none',
         scrollTrigger: {
           trigger: sectionRef.current,
           scrub: 1.1,
-          start: 'top bottom',
-          end: 'bottom top',
-        },
-      })
-
-      gsap.to('.skills-constellation', {
-        yPercent: -6,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          scrub: 1.4,
           start: 'top bottom',
           end: 'bottom top',
         },
@@ -99,172 +217,405 @@ function SkillsUniverse() {
     return () => context.revert()
   }, [shouldReduceMotion])
 
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return undefined
+
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return undefined
+
+    let W = 0
+    let H = 0
+    let cancelled = false
+    let rafId = 0
+
+    function layoutNodes() {
+      const LX = [W * 0.14, W * 0.5, W * 0.86]
+      ;[0, 1, 2].forEach((layer) => {
+        const arr = NODES.filter((n) => n.layer === layer)
+        arr.forEach((n, i) => {
+          n.bx = LX[layer]
+          n.by = (H / (arr.length + 1)) * (i + 1)
+        })
+      })
+    }
+
+    function nodeR(n) {
+      const base = n.layer === 1 ? 6.5 : 7.5
+      return base * n.imp * (0.85 + n.z * 0.15)
+    }
+
+    function nx(n) {
+      return (n.bx || 0) + (n.ox || 0)
+    }
+
+    function ny(n) {
+      return (n.by || 0) + (n.oy || 0)
+    }
+
+    function nodeAnchor(n) {
+      const x = nx(n)
+      const y = ny(n)
+      const r = nodeR(n)
+      return { x, y, r }
+    }
+
+    function spawnPulse() {
+      const s = stateRef.current
+      const vc = getVC()
+      if (!vc.length) return
+      const c = vc[Math.floor(Math.random() * vc.length)]
+      const a = nd(c.a)
+      const b = nd(c.b)
+      if (!a || !b) return
+      s.pulses.push({
+        ax: nx(a),
+        ay: ny(a),
+        bx: nx(b),
+        by: ny(b),
+        col: a.col,
+        t: 0,
+        spd: 0.005 + Math.random() * 0.004,
+        w: c.w,
+        za: a.z,
+      })
+    }
+
+    function toHex(alpha) {
+      return Math.round(Math.max(0, Math.min(1, alpha)) * 255)
+        .toString(16)
+        .padStart(2, '0')
+    }
+
+    function drawFrame() {
+      const s = stateRef.current
+      s.frame += 1
+      ctx.clearRect(0, 0, W, H)
+
+      NODES.forEach((n) => {
+        n.driftT = (n.driftT || 0) + 0.007 * (n.driftS || 0.3)
+        n.ox = Math.sin(n.driftT) * (n.driftA || 3)
+        n.oy = Math.cos(n.driftT * 0.68) * (n.driftA || 3) * 0.55
+        n.pulse = (n.pulse || 0) + 0.035
+      })
+
+      if (!shouldReduceMotion) {
+        if (s.frame % 30 === 0) spawnPulse()
+        if (s.frame % 58 === 0 && Math.random() > 0.4) spawnPulse()
+      }
+
+      const vn = NODES
+      const vc = getVC()
+      const { hov } = s
+
+      const isLit = (n) => {
+        if (!hov) return true
+        if (n.id === hov) return true
+        return vc.some((c) => (c.a === hov && c.b === n.id) || (c.b === hov && c.a === n.id))
+      }
+
+      const connLit = (c) => !hov || c.a === hov || c.b === hov
+
+      vc.forEach((c) => {
+        const a = nd(c.a)
+        const b = nd(c.b)
+        if (!a || !b) return
+        const ax = nx(a)
+        const ay = ny(a)
+        const bx = nx(b)
+        const by = ny(b)
+        const lit = connLit(c)
+        const depthA = (a.z + b.z) / 2
+        const base = hov ? (lit ? 0.22 : 0.018) : 0.085
+        const finalA = base * depthA * (lit ? c.w : 0.45)
+        const isL1 = a.layer === 0
+        const col = isL1 ? `rgba(124,58,237,${finalA})` : `rgba(6,182,212,${finalA})`
+        const mx = (ax + bx) / 2
+        const my = (ay + by) / 2 - 14
+        ctx.beginPath()
+        ctx.moveTo(ax, ay)
+        ctx.quadraticCurveTo(mx, my, bx, by)
+        ctx.strokeStyle = col
+        ctx.lineWidth = lit ? 0.55 + c.w * 0.4 : 0.32
+        ctx.stroke()
+      })
+
+      s.pulses = s.pulses.filter((p) => p.t <= 1)
+      s.pulses.forEach((p) => {
+        p.t += p.spd
+        const t = p.t
+        const mx = (p.ax + p.bx) / 2
+        const my = (p.ay + p.by) / 2 - 14
+        const x = (1 - t) * (1 - t) * p.ax + 2 * (1 - t) * t * mx + t * t * p.bx
+        const y = (1 - t) * (1 - t) * p.ay + 2 * (1 - t) * t * my + t * t * p.by
+        const rad = 5 * p.za
+        const grd = ctx.createRadialGradient(x, y, 0, x, y, rad)
+        grd.addColorStop(0, `${p.col}CC`)
+        grd.addColorStop(0.4, `${p.col}44`)
+        grd.addColorStop(1, `${p.col}00`)
+        ctx.beginPath()
+        ctx.arc(x, y, rad, 0, PI2)
+        ctx.fillStyle = grd
+        ctx.fill()
+        ctx.beginPath()
+        ctx.arc(x, y, 1.2, 0, PI2)
+        ctx.fillStyle = `${p.col}FF`
+        ctx.fill()
+      })
+
+      const sorted = [...vn].sort((a, b) => a.z - b.z)
+      sorted.forEach((n) => {
+        const { x, y, r: r0 } = nodeAnchor(n)
+        const lit = isLit(n)
+        const isH = n.id === hov
+        const r = r0 * (isH ? 1.2 : 1)
+        const depthFade = 0.38 + n.z * 0.62
+        const baseA = lit ? depthFade : depthFade * 0.18
+
+        if (n.z < 0.72) {
+          const bgR = r * 5
+          const bg = ctx.createRadialGradient(x, y, 0, x, y, bgR)
+          bg.addColorStop(0, `${n.col}${toHex(baseA * 0.18)}`)
+          bg.addColorStop(1, `${n.col}00`)
+          ctx.beginPath()
+          ctx.arc(x, y, bgR, 0, PI2)
+          ctx.fillStyle = bg
+          ctx.fill()
+        }
+
+        const glowR = r * (isH ? 4.5 : 3.2) * n.imp
+        const glow = ctx.createRadialGradient(x, y, r * 0.35, x, y, glowR)
+        glow.addColorStop(0, `${n.col}${toHex(baseA * 0.5)}`)
+        glow.addColorStop(0.5, `${n.col}${toHex(baseA * 0.1)}`)
+        glow.addColorStop(1, `${n.col}00`)
+        ctx.beginPath()
+        ctx.arc(x, y, glowR, 0, PI2)
+        ctx.fillStyle = glow
+        ctx.fill()
+
+        if (isH || n.imp >= 1.0) {
+          const pA = isH ? 0.4 : 0.09
+          const pR = r + 2.5 + Math.sin(n.pulse) * 2
+          ctx.beginPath()
+          ctx.arc(x, y, pR, 0, PI2)
+          ctx.strokeStyle = `${n.col}${toHex(pA * (isH ? 1 : 0.45))}`
+          ctx.lineWidth = isH ? 1 : 0.45
+          ctx.stroke()
+        }
+
+        ctx.globalAlpha = baseA
+        ctx.beginPath()
+        ctx.arc(x, y, r, 0, PI2)
+        ctx.fillStyle = n.col
+        ctx.fill()
+        ctx.globalAlpha = 1
+
+        if (n.z > 0.68) {
+          ctx.beginPath()
+          ctx.arc(x - r * 0.28, y - r * 0.28, r * 0.18, 0, PI2)
+          ctx.fillStyle = `rgba(255,255,255,${baseA * 0.28})`
+          ctx.fill()
+        }
+
+        ctx.font = `500 9px 'Space Grotesk', sans-serif`
+        ctx.fillStyle = lit ? 'rgba(148,163,184,0.55)' : 'rgba(71,85,105,0.45)'
+        ctx.textAlign = 'center'
+        ctx.textBaseline = 'top'
+        ctx.fillText(n.lb, x, y + r + 5)
+      })
+    }
+
+    function loop() {
+      if (cancelled) return
+      drawFrame()
+      rafId = requestAnimationFrame(loop)
+      animRef.current = rafId
+    }
+
+    function resize() {
+      const parent = canvas.parentElement
+      if (!parent) return
+      const rect = parent.getBoundingClientRect()
+      W = Math.max(1, rect.width)
+      H = Math.max(1, rect.height)
+      const dpr = Math.min(window.devicePixelRatio || 1, 2)
+      canvas.width = Math.floor(W * dpr)
+      canvas.height = Math.floor(H * dpr)
+      canvas.style.width = `${W}px`
+      canvas.style.height = `${H}px`
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+      layoutNodes()
+    }
+
+    function onMove(e) {
+      const rect = canvas.getBoundingClientRect()
+      const mx = e.clientX - rect.left
+      const my = e.clientY - rect.top
+      const found = NODES.find((n) => {
+        const { x, y, r } = nodeAnchor(n)
+        const hitR = r * 1.2 * 2.8
+        return (mx - x) ** 2 + (my - y) ** 2 < hitR ** 2
+      })
+      stateRef.current.hov = found ? found.id : null
+      canvas.style.cursor = found ? 'pointer' : 'default'
+    }
+
+    function onLeave() {
+      stateRef.current.hov = null
+    }
+
+    resize()
+    if (shouldReduceMotion) {
+      drawFrame()
+    } else {
+      loop()
+    }
+
+    window.addEventListener('resize', resize)
+    canvas.addEventListener('mousemove', onMove)
+    canvas.addEventListener('mouseleave', onLeave)
+
+    return () => {
+      cancelled = true
+      cancelAnimationFrame(rafId)
+      window.removeEventListener('resize', resize)
+      canvas.removeEventListener('mousemove', onMove)
+      canvas.removeEventListener('mouseleave', onLeave)
+    }
+  }, [shouldReduceMotion])
+
   return (
     <section
       id="skills-universe"
       ref={sectionRef}
-      className="relative isolate overflow-hidden px-5 py-20 text-slate-100 sm:px-8 sm:py-24 lg:px-12 lg:py-28"
+      className="relative isolate overflow-hidden px-4 py-20 text-slate-100 sm:px-8 sm:py-24 lg:px-12 lg:py-28"
     >
       <div className="pointer-events-none absolute inset-x-0 top-[-1px] z-20 h-24 bg-gradient-to-b from-[#020817] via-[#020817]/70 to-transparent" />
-      <div className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(2,8,23,0.92),rgba(2,8,23,0.86)_40%,rgba(2,8,23,0.95))]" />
-      <div className="skills-universe-glow absolute inset-0 -z-10 bg-[radial-gradient(circle_at_18%_22%,rgba(6,182,212,0.15),transparent_35%),radial-gradient(circle_at_82%_28%,rgba(124,58,237,0.16),transparent_38%),radial-gradient(circle_at_50%_72%,rgba(59,130,246,0.08),transparent_42%)] opacity-70" />
-      <div className="pointer-events-none absolute left-[-6rem] top-16 -z-10 h-64 w-64 rounded-full border border-cyan-200/12 bg-cyan-300/10 blur-2xl sm:h-72 sm:w-72" />
-      <div className="pointer-events-none absolute bottom-10 right-[-8rem] -z-10 h-72 w-72 rounded-full border border-violet-300/12 bg-violet-400/10 blur-2xl sm:h-80 sm:w-80" />
+      <div className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(2,8,23,0.95),rgba(2,8,23,0.88)_50%,rgba(2,8,23,0.96))]" />
+      <div className="skills-universe-glow pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_50%_0%,rgba(124,58,237,0.12),transparent_42%),radial-gradient(circle_at_20%_60%,rgba(6,182,212,0.08),transparent_35%)] opacity-75" />
+      <FloatingOrb className="pointer-events-none absolute left-[-5%] top-[20%] -z-10 h-[300px] w-[300px] rounded-full bg-violet-500 opacity-[0.05] blur-[100px]" />
+      <FloatingOrb className="pointer-events-none absolute bottom-[10%] right-[-5%] -z-10 h-[250px] w-[250px] rounded-full bg-cyan-400 opacity-[0.04] blur-[80px]" delay={2} />
 
-      <div className="mx-auto max-w-7xl">
+      <div className="mx-auto max-w-5xl">
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-12% 0px' }}
           variants={revealVariant}
-          className="mb-14 max-w-4xl"
+          className="mb-10 text-center"
         >
-          <div className="mb-5 inline-flex rounded-full border border-violet-200/20 bg-white/[0.035] px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-cyan-100 backdrop-blur-xl">
-            Neural ecosystem
+          <div className="mb-5 inline-flex rounded-full border border-violet-200/20 bg-white/[0.035] px-4 py-2 text-xs font-medium uppercase tracking-[0.2em] text-cyan-100/90 backdrop-blur-xl">
+            Neural stack
           </div>
           <h2
-            className="font-medium leading-none text-white"
-            style={{ fontSize: 'clamp(3rem, 7vw, 6.5rem)' }}
+            className="font-display font-medium leading-none text-white"
+            style={{ fontSize: 'clamp(2.5rem, 6vw, 4rem)' }}
           >
             Skills Universe
           </h2>
-          <p className="mt-6 max-w-3xl text-base leading-8 text-slate-300 sm:text-lg md:text-xl">
-            The technologies, systems, and tools powering intelligent digital experiences.
+          <p className="mx-auto mt-5 max-w-xl font-display text-base text-slate-400 sm:text-lg">
+            Tools and technologies that power intelligent products, organized the way I think about the stack.
           </p>
         </motion.div>
 
         <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-10% 0px' }}
-          variants={revealVariant}
-          className="skills-constellation relative mb-10 overflow-hidden rounded-[2rem] border border-white/10 bg-slate-950/55 p-5 shadow-[0_22px_90px_rgba(2,8,23,0.44)] backdrop-blur-xl sm:mb-12 sm:p-6 md:p-8"
+          className="relative mx-auto mb-10 max-w-3xl text-center"
+          initial={shouldReduceMotion ? false : { opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, ease: MOTION_EASE_STANDARD }}
         >
-          <svg
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0 h-full w-full opacity-55"
-            viewBox="0 0 1000 520"
-            preserveAspectRatio="none"
-          >
-            {links.map(([x1, y1, x2, y2], index) => (
-              <g key={`${x1}-${y1}-${x2}-${y2}`}>
-                <line
-                  x1={x1}
-                  y1={y1}
-                  x2={x2}
-                  y2={y2}
-                  stroke="url(#skills-link-gradient)"
-                  strokeWidth="1.15"
-                  strokeOpacity="0.42"
-                />
-                <motion.circle
-                  cx={x1}
-                  cy={y1}
-                  r="1.8"
-                  fill="#67E8F9"
-                  opacity={0.26}
-                  animate={
-                    shouldReduceMotion
-                      ? undefined
-                      : {
-                          cx: [x1, x2],
-                          cy: [y1, y2],
-                          opacity: [0, 0.28, 0],
-                        }
-                  }
-                  transition={{
-                    duration: 5.5 + index * 0.7,
-                    delay: index * 0.45,
-                    repeat: Infinity,
-                    ease: 'easeInOut',
-                  }}
-                />
-              </g>
-            ))}
-            <defs>
-              <linearGradient id="skills-link-gradient" x1="0%" x2="100%" y1="0%" y2="100%">
-                <stop offset="0%" stopColor="#06B6D4" stopOpacity="0" />
-                <stop offset="50%" stopColor="#7C3AED" stopOpacity="0.9" />
-                <stop offset="100%" stopColor="#06B6D4" stopOpacity="0" />
-              </linearGradient>
-            </defs>
-          </svg>
-
-          <div className="relative min-h-[300px] sm:min-h-[360px] md:min-h-[420px]">
-            {floatingNodes.map((node, index) => (
-              <motion.div
-                key={node.label}
-                className="group absolute"
-                style={{ left: `${node.x / 10}%`, top: `${node.y / 5.2}%` }}
-                animate={
-                  shouldReduceMotion
-                    ? undefined
-                    : {
-                        y: [0, -10, 0],
-                        scale: [1, 1.02, 1],
-                      }
-                }
-                transition={{
-                  delay: node.delay,
-                  duration: 7.2 + index * 0.35,
-                  ease: 'easeInOut',
-                  repeat: Infinity,
-                }}
-                whileHover={shouldReduceMotion ? undefined : { scale: 1.06 }}
-              >
-                <div className="rounded-full border border-cyan-200/25 bg-slate-900/65 px-3.5 py-2 text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-cyan-100 shadow-[0_0_18px_rgba(6,182,212,0.14)] backdrop-blur-xl transition duration-300 group-hover:border-cyan-100/50 group-hover:shadow-[0_0_28px_rgba(6,182,212,0.26)] sm:px-4 sm:py-2.5 sm:text-xs">
-                  {node.label}
-                </div>
-              </motion.div>
-            ))}
-
-            <motion.div
-              className="pointer-events-none absolute left-1/2 top-1/2 h-44 w-44 -translate-x-1/2 -translate-y-1/2 rounded-full border border-violet-200/25"
-              animate={shouldReduceMotion ? undefined : { rotate: 360 }}
-              transition={{ duration: 48, ease: 'linear', repeat: Infinity }}
+          <div className="font-display text-[clamp(3rem,8vw,4rem)] font-bold leading-none">
+            <span
+              style={{
+                background: 'linear-gradient(135deg, #7C3AED, #06B6D4)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}
             >
-              <div className="absolute inset-7 rounded-full border border-cyan-200/20" />
-              <div className="absolute inset-16 rounded-full bg-cyan-300/15 blur-lg" />
-            </motion.div>
+              30+ Technologies
+            </span>
           </div>
+          <p className="mt-3 font-display text-base text-[#475569]">across the full stack</p>
         </motion.div>
 
-        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-          {skillCategories.map((category, categoryIndex) => (
-            <motion.article
-              key={category.name}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: '-8% 0px' }}
-              variants={revealVariant}
-              transition={{ delay: categoryIndex * 0.045 }}
-              whileHover={shouldReduceMotion ? undefined : { y: -2 }}
-              className="group relative overflow-hidden rounded-3xl border border-white/10 bg-slate-950/55 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-xl sm:p-5"
+        <div className="text-center">
+          <div className="inline-flex max-w-full flex-wrap justify-center gap-1 rounded-full border border-white/[0.06] bg-white/[0.02] p-1.5">
+            {STACK_TABS.map((tab) => {
+              const isActive = activeStackTab === tab.id
+              return (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => setActiveStackTab(tab.id)}
+                  className="skill-tab rounded-full border px-4 py-2 font-display text-sm transition duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-200"
+                  style={{
+                    background: isActive
+                      ? 'linear-gradient(135deg, rgba(124,58,237,0.25), rgba(6,182,212,0.15))'
+                      : 'transparent',
+                    borderColor: isActive ? 'rgba(124,58,237,0.4)' : 'transparent',
+                    color: isActive ? '#FFFFFF' : '#475569',
+                    fontWeight: isActive ? 500 : 400,
+                  }}
+                >
+                  {tab.label}
+                </button>
+              )
+            })}
+          </div>
+        </div>
+
+        <div className="relative mx-auto mt-8 max-w-3xl overflow-hidden rounded-[1.75rem] border border-white/10 bg-slate-950/55 p-5 shadow-[0_0_54px_rgba(2,8,23,0.46)] backdrop-blur-xl sm:p-8">
+          <div
+            className="pointer-events-none absolute inset-0 transition duration-500"
+            style={{
+              background: `radial-gradient(circle at 50% 45%, ${activeStack.atmosphere}, transparent 62%)`,
+            }}
+          />
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeStackTab}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3, ease: 'easeOut' }}
+              className="relative flex flex-wrap justify-center gap-3"
             >
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-cyan-300/[0.06] via-transparent to-violet-400/[0.08] opacity-0 transition duration-500 group-hover:opacity-100" />
-              <div className="relative">
-                <div className="mb-4 inline-flex rounded-full border border-violet-200/20 bg-white/[0.03] px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-slate-300">
-                  {category.name}
-                </div>
-                <div className="flex flex-wrap gap-2.5">
-                  {category.technologies.map((technology) => (
-                    <motion.span
-                      key={technology}
-                      className="rounded-full border border-cyan-200/20 bg-cyan-200/[0.05] px-3 py-1.5 text-xs font-medium text-slate-200 shadow-[0_0_0_rgba(6,182,212,0)] transition duration-300 hover:border-cyan-100/45 hover:bg-cyan-200/[0.12] hover:text-white hover:shadow-[0_0_18px_rgba(6,182,212,0.2)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-200"
-                      whileHover={shouldReduceMotion ? undefined : { scale: 1.03 }}
-                    >
-                      {technology}
-                    </motion.span>
-                  ))}
-                </div>
-              </div>
-            </motion.article>
+              {activeStack.skills.map((skill, index) => (
+                <SkillPill active={activeStack} index={index} key={skill} skill={skill} />
+              ))}
+            </motion.div>
+          </AnimatePresence>
+          <p className="relative mt-6 text-center font-display text-xs text-slate-500">
+            Neural pathways respond below — hover nodes to trace the graph.
+          </p>
+        </div>
+
+        <h3 className="mt-14 text-center font-display text-sm font-medium uppercase tracking-[0.18em] text-slate-500">
+          Live neural map
+        </h3>
+        <p className="mx-auto mt-2 max-w-md text-center font-display text-xs text-slate-500">
+          Hover a node to trace its connections through the stack.
+        </p>
+
+        <div className="relative mx-auto mt-6 max-w-[920px] overflow-hidden rounded-[1.25rem] border border-violet-500/20 bg-slate-950/70 shadow-[0_0_54px_rgba(2,8,23,0.46)] backdrop-blur-xl">
+          <canvas ref={canvasRef} className="block h-[min(480px,52vw)] min-h-[380px] w-full sm:min-h-[420px]" />
+        </div>
+
+        <div className="mx-auto mt-2 flex max-w-[920px]">
+          {['LAYER 1 · LANGUAGES', 'LAYER 2 · FRAMEWORKS', 'LAYER 3 · INFRA & DB'].map((l) => (
+            <div
+              key={l}
+              className="flex-1 text-center font-display text-[9px] tracking-[0.14em] text-slate-500/40"
+            >
+              {l}
+            </div>
           ))}
         </div>
       </div>
-      <div className="pointer-events-none absolute inset-x-0 bottom-[-1px] z-20 h-28 bg-gradient-to-b from-transparent via-[#020817]/65 to-[#020817]" />
+
+      <div className="pointer-events-none absolute inset-x-0 bottom-[-1px] z-20 h-24 bg-gradient-to-b from-transparent via-[#020817]/65 to-[#020817]" />
     </section>
   )
 }
-
-export default SkillsUniverse
