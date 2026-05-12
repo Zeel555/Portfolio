@@ -22,10 +22,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
-# Vercel
-.vercel
-
-# Subproject specific
-portfolionpm/node_modules
-portfolionpm/dist

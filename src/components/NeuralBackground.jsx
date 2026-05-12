@@ -1,55 +1,69 @@
 // npm install @tsparticles/react @tsparticles/slim
 
-import { useEffect, useMemo, useState } from "react";
-import Particles, { initParticlesEngine } from "@tsparticles/react";
-import { loadSlim } from "@tsparticles/slim";
+import { useEffect, useMemo, useState } from 'react'
+import Particles, { initParticlesEngine } from '@tsparticles/react'
+import { loadSlim } from '@tsparticles/slim'
 
 const INTENSITY_CONFIG = {
   low: {
-    particles: 50,
-    linkDistance: 100,
+    particles: 35,
+    linkDistance: 85,
+    linkOpacity: 0.08,
+    opacity: {
+      min: 0.18,
+      max: 0.42,
+    },
   },
   medium: {
     particles: 90,
     linkDistance: 140,
+    linkOpacity: 0.15,
+    opacity: {
+      min: 0.3,
+      max: 0.7,
+    },
   },
   high: {
     particles: 130,
     linkDistance: 180,
+    linkOpacity: 0.15,
+    opacity: {
+      min: 0.3,
+      max: 0.7,
+    },
   },
-};
+}
 
-let particlesEngineInit;
+let particlesEngineInit
 
-export default function NeuralBackground({ intensity = "medium" }) {
-  const [isReady, setIsReady] = useState(false);
-  const config = INTENSITY_CONFIG[intensity] || INTENSITY_CONFIG.medium;
+function NeuralBackground({ intensity = 'medium' }) {
+  const [isReady, setIsReady] = useState(false)
+  const config = INTENSITY_CONFIG[intensity] || INTENSITY_CONFIG.medium
+  const isTouchDevice = typeof window !== 'undefined' && 'ontouchstart' in window
 
   useEffect(() => {
-    let isMounted = true;
+    let isMounted = true
 
     particlesEngineInit ||= initParticlesEngine(async (engine) => {
-      await loadSlim(engine);
-    });
+      await loadSlim(engine)
+    })
 
     particlesEngineInit.then(() => {
-      if (!isMounted) {
-        return;
+      if (isMounted) {
+        setIsReady(true)
       }
-
-      setIsReady(true);
-    });
+    })
 
     return () => {
-      isMounted = false;
-    };
-  }, []);
+      isMounted = false
+    }
+  }, [])
 
   const options = useMemo(
     () => ({
       background: {
         color: {
-          value: "#020817",
+          value: '#020817',
         },
       },
       detectRetina: true,
@@ -59,14 +73,14 @@ export default function NeuralBackground({ intensity = "medium" }) {
         zIndex: 0,
       },
       interactivity: {
-        detectsOn: "window",
+        detectsOn: 'window',
         events: {
           onClick: {
             enable: false,
           },
           onHover: {
-            enable: true,
-            mode: ["repulse", "bubble"],
+            enable: !isTouchDevice,
+            mode: ['repulse', 'bubble'],
           },
           resize: {
             enable: true,
@@ -88,21 +102,21 @@ export default function NeuralBackground({ intensity = "medium" }) {
       },
       particles: {
         color: {
-          value: ["#7C3AED", "#06B6D4", "#3B82F6"],
+          value: ['#7C3AED', '#06B6D4', '#3B82F6'],
         },
         links: {
-          color: "#7C3AED",
+          color: '#7C3AED',
           distance: config.linkDistance,
           enable: true,
-          opacity: 0.15,
+          opacity: config.linkOpacity,
           width: 0.5,
         },
         move: {
           bounce: true,
-          direction: "none",
+          direction: 'none',
           enable: true,
           outModes: {
-            default: "bounce",
+            default: 'bounce',
           },
           random: true,
           speed: {
@@ -118,10 +132,7 @@ export default function NeuralBackground({ intensity = "medium" }) {
           value: config.particles,
         },
         opacity: {
-          value: {
-            min: 0.3,
-            max: 0.7,
-          },
+          value: config.opacity,
           animation: {
             enable: true,
             speed: 0.25,
@@ -129,7 +140,7 @@ export default function NeuralBackground({ intensity = "medium" }) {
           },
         },
         shape: {
-          type: "circle",
+          type: 'circle',
         },
         size: {
           value: {
@@ -159,11 +170,17 @@ export default function NeuralBackground({ intensity = "medium" }) {
         },
       ],
     }),
-    [config.linkDistance, config.particles],
-  );
+    [
+      config.linkDistance,
+      config.linkOpacity,
+      config.opacity,
+      config.particles,
+      isTouchDevice,
+    ],
+  )
 
   if (!isReady) {
-    return null;
+    return null
   }
 
   return (
@@ -171,16 +188,18 @@ export default function NeuralBackground({ intensity = "medium" }) {
       id="neural-background"
       options={options}
       style={{
-        height: "100vh",
+        height: '100vh',
         left: 0,
-        position: "fixed",
+        position: 'fixed',
         top: 0,
-        width: "100vw",
+        width: '100vw',
         zIndex: 0,
       }}
     />
-  );
+  )
 }
+
+export default NeuralBackground
 
 // <NeuralBackground intensity="medium" />
 // Place inside App.jsx above your router/content
