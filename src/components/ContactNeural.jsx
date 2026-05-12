@@ -23,7 +23,7 @@ function ContactNeural() {
   return (
     <section
       id="contact"
-      className="relative isolate overflow-hidden px-4 py-20 text-slate-100 sm:px-8 sm:py-28 lg:px-12"
+      className="relative isolate overflow-hidden px-4 pb-16 pt-20 text-slate-100 sm:px-8 sm:pb-16 sm:pt-28 lg:px-12"
     >
       <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_50%_80%,rgba(6,182,212,0.08),transparent_40%),#020817]" />
       <div className="pointer-events-none absolute inset-0 -z-10 opacity-30 [background-image:radial-gradient(circle,rgba(255,255,255,0.04)_1px,transparent_1px)] [background-size:32px_32px]" />
@@ -130,7 +130,6 @@ function ContactNeural() {
                 { label: 'GitHub', href: 'https://github.com/Zeel555', ext: true },
                 { label: 'LinkedIn', href: 'https://www.linkedin.com/in/zeel-sadariya-1634b4283/', ext: true },
                 { label: 'Email', href: 'mailto:zeelsadariya@gmail.com', ext: false },
-                { label: 'Phone', href: 'tel:+919664665296', ext: false },
               ].map((link) => (
                 <a
                   key={link.label}

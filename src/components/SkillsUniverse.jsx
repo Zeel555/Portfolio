@@ -342,6 +342,7 @@ export default function SkillsUniverse() {
     }
 
     function drawFrame() {
+      if (!W || !H) return
       const s = stateRef.current
       s.frame += 1
       ctx.clearRect(0, 0, W, H)
@@ -371,26 +372,21 @@ export default function SkillsUniverse() {
       const connLit = (c) => !hov || c.a === hov || c.b === hov
 
       vc.forEach((c) => {
-        const a = nd(c.a)
-        const b = nd(c.b)
+        const a = nd(c.a), b = nd(c.b)
         if (!a || !b) return
-        const ax = nx(a)
-        const ay = ny(a)
-        const bx = nx(b)
-        const by = ny(b)
+        const ax = nx(a), ay = ny(a), bx = nx(b), by = ny(b)
+        if (!ax || !ay || !bx || !by) return
+
         const lit = connLit(c)
-        const depthA = (a.z + b.z) / 2
-        const base = hov ? (lit ? 0.22 : 0.018) : 0.085
-        const finalA = base * depthA * (lit ? c.w : 0.45)
         const isL1 = a.layer === 0
-        const col = isL1 ? `rgba(124,58,237,${finalA})` : `rgba(6,182,212,${finalA})`
-        const mx = (ax + bx) / 2
-        const my = (ay + by) / 2 - 14
+
         ctx.beginPath()
         ctx.moveTo(ax, ay)
-        ctx.quadraticCurveTo(mx, my, bx, by)
-        ctx.strokeStyle = col
-        ctx.lineWidth = lit ? 0.55 + c.w * 0.4 : 0.32
+        ctx.lineTo(bx, by)
+        ctx.strokeStyle = isL1
+          ? `rgba(124, 58, 237, ${lit ? 0.35 : 0.06})`
+          : `rgba(6, 182, 212, ${lit ? 0.25 : 0.05})`
+        ctx.lineWidth = lit ? 1 : 0.5
         ctx.stroke()
       })
 

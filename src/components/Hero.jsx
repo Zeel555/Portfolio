@@ -322,14 +322,14 @@ function Hero() {
               Hi, I&apos;m Jeel.
             </motion.span>
             <motion.span className="block text-white" style={{ lineHeight: 0.98 }} variants={lineMotion}>
-              Building full-stack
+              I build intelligent
             </motion.span>
             <motion.span
               className="block text-[#7C3AED]"
               style={{ lineHeight: 0.98 }}
               variants={lineMotion}
             >
-              AI products.
+              AI systems.
             </motion.span>
           </h1>
 
@@ -357,16 +357,16 @@ function Hero() {
               display: 'flex',
               alignItems: 'center',
               gap: '0',
-              marginTop: '48px',
-              paddingTop: '32px',
-              borderTop: '1px solid rgba(255,255,255,0.06)',
+              marginTop: '40px',
+              paddingTop: '28px',
+              borderTop: '1px solid rgba(255,255,255,0.07)',
               flexWrap: 'wrap',
             }}
           >
-            <div style={{ textAlign: 'center', padding: '0 32px 0 0', minWidth: '120px' }}>
+            <div style={{ textAlign: 'center', paddingRight: '28px', minWidth: '120px' }}>
               <div
                 style={{
-                  fontSize: 'clamp(24px, 3vw, 32px)',
+                  fontSize: 'clamp(22px, 3vw, 30px)',
                   fontWeight: '700',
                   color: '#F1F5F9',
                   fontFamily: 'Space Grotesk, sans-serif',
@@ -380,8 +380,8 @@ function Hero() {
                   fontSize: '12px',
                   color: '#475569',
                   fontFamily: 'Space Grotesk, sans-serif',
-                  marginTop: '6px',
-                  letterSpacing: '0.04em',
+                  marginTop: '5px',
+                  letterSpacing: '0.05em',
                 }}
               >
                 Projects Built
@@ -391,17 +391,17 @@ function Hero() {
             <div
               style={{
                 width: '1px',
-                height: '40px',
+                height: '36px',
                 background: 'rgba(255,255,255,0.08)',
               }}
             />
 
-            <div style={{ textAlign: 'center', padding: '0 32px', minWidth: '120px' }}>
+            <div style={{ textAlign: 'center', padding: '0 28px', minWidth: '120px' }}>
               <div
                 style={{
-                  fontSize: 'clamp(24px, 3vw, 32px)',
+                  fontSize: 'clamp(22px, 3vw, 30px)',
                   fontWeight: '700',
-                  color: '#F1F5F9',
+                  color: '#06B6D4',
                   fontFamily: 'Space Grotesk, sans-serif',
                   lineHeight: '1',
                 }}
@@ -413,8 +413,8 @@ function Hero() {
                   fontSize: '12px',
                   color: '#475569',
                   fontFamily: 'Space Grotesk, sans-serif',
-                  marginTop: '6px',
-                  letterSpacing: '0.04em',
+                  marginTop: '5px',
+                  letterSpacing: '0.05em',
                 }}
               >
                 CGPA at CHARUSAT
@@ -424,17 +424,17 @@ function Hero() {
             <div
               style={{
                 width: '1px',
-                height: '40px',
+                height: '36px',
                 background: 'rgba(255,255,255,0.08)',
               }}
             />
 
-            <div style={{ textAlign: 'center', padding: '0 0 0 32px', minWidth: '120px' }}>
+            <div style={{ textAlign: 'center', paddingLeft: '28px', minWidth: '120px' }}>
               <div
                 style={{
-                  fontSize: 'clamp(24px, 3vw, 32px)',
+                  fontSize: 'clamp(22px, 3vw, 30px)',
                   fontWeight: '700',
-                  color: '#06B6D4',
+                  color: '#F1F5F9',
                   fontFamily: 'Space Grotesk, sans-serif',
                   lineHeight: '1',
                 }}
@@ -446,11 +446,11 @@ function Hero() {
                   fontSize: '12px',
                   color: '#475569',
                   fontFamily: 'Space Grotesk, sans-serif',
-                  marginTop: '6px',
-                  letterSpacing: '0.04em',
+                  marginTop: '5px',
+                  letterSpacing: '0.05em',
                 }}
               >
-                DSA Problems
+                LeetCode Solved
               </div>
             </div>
           </motion.div>

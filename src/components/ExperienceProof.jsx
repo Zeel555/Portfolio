@@ -61,7 +61,7 @@ function ExperienceProof() {
   return (
     <section
       id="about"
-      className="relative isolate overflow-hidden px-4 py-20 text-slate-100 sm:px-8 sm:py-24 lg:px-12 lg:py-28"
+      className="relative isolate overflow-hidden px-4 pb-20 pt-12 text-slate-100 sm:px-8 sm:pb-24 sm:pt-14 lg:px-12 lg:pb-28 lg:pt-16"
     >
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_0%,rgba(124,58,237,0.05),transparent_34%),#020817]" />
       
@@ -157,7 +157,7 @@ function ExperienceProof() {
             ))}
           </div>
 
-          <div className="mt-12 grid grid-cols-3 gap-4">
+          <div className="mt-4 flex justify-around gap-4 rounded-2xl border border-white/[0.06] bg-white/[0.02] p-6 backdrop-blur-md">
             {stats.map((stat, index) => (
               <motion.div
                 key={stat.label}
@@ -165,7 +165,7 @@ function ExperienceProof() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.4 + index * 0.1 }}
-                className="rounded-[22px] border border-white/[0.08] bg-white/[0.02] p-6 text-center backdrop-blur-md"
+                className="text-center"
               >
                 <div className="font-display text-3xl font-bold text-white">{stat.value}</div>
                 <div className="mt-2 font-display text-xs uppercase tracking-widest text-slate-500">{stat.label}</div>

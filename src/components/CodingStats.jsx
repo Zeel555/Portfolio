@@ -39,7 +39,7 @@ function CodingStats() {
   return (
     <section
       id="stats"
-      className="relative isolate overflow-hidden px-4 py-20 text-slate-100 sm:px-8 sm:py-24 lg:px-12"
+      className="relative isolate overflow-hidden px-4 pb-12 pt-20 text-slate-100 sm:px-8 sm:pb-14 sm:pt-24 lg:px-12"
     >
       <div className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#020817,rgba(2,8,23,0.94))]" />
       <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-px bg-gradient-to-r from-transparent via-cyan-300/30 to-transparent" />

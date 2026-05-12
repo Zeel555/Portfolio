@@ -92,6 +92,14 @@ input {
   outline-offset: 2px;
 }
 
+.modal-scroll {
+  scrollbar-width: none;
+}
+
+.modal-scroll::-webkit-scrollbar {
+  display: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

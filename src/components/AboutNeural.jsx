@@ -116,7 +116,7 @@ function AboutNeural() {
   return (
     <section
       id="about"
-      className="relative isolate overflow-hidden px-4 py-20 text-slate-100 sm:px-8 sm:py-24 lg:px-12 lg:py-[120px]"
+      className="relative isolate overflow-hidden px-4 pb-20 pt-12 text-slate-100 sm:px-8 sm:pb-24 sm:pt-14 lg:px-12 lg:pb-[110px] lg:pt-16"
     >
       <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(124,58,237,0.12),transparent),#020817]" />
       <div className="pointer-events-none absolute inset-0 -z-10 opacity-[0.35] [background-image:radial-gradient(circle_at_center,rgba(255,255,255,0.06)_1px,transparent_1px)] [background-size:24px_24px]" />

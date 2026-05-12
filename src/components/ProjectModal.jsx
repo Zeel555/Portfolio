@@ -74,8 +74,8 @@ function ProjectModal({ project, onClose }) {
         role="dialog"
         aria-modal="true"
         aria-labelledby="project-modal-title"
-        className="fixed left-1/2 top-1/2 z-[1001] max-h-[85vh] w-[min(900px,90vw)] overflow-y-auto rounded-[20px] border border-violet-500/25 bg-[rgba(10,14,30,0.98)] shadow-[0_0_80px_rgba(124,58,237,0.15),0_0_160px_rgba(6,182,212,0.05)]"
-        style={{ transform: 'translate(-50%, -50%)' }}
+        className="modal-scroll fixed left-1/2 top-1/2 z-[1001] max-h-[85vh] w-[min(900px,90vw)] overflow-y-auto rounded-[20px] border border-violet-500/25 bg-[rgba(10,14,30,0.98)] shadow-[0_0_80px_rgba(124,58,237,0.15),0_0_160px_rgba(6,182,212,0.05)]"
+        style={{ transform: 'translate(-50%, -50%)', scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         initial={{ opacity: 0, scale: 0.95, x: '-50%', y: '-50%' }}
         animate={{ opacity: 1, scale: 1, x: '-50%', y: '-50%' }}
         exit={{ opacity: 0, scale: 0.95, x: '-50%', y: '-50%' }}

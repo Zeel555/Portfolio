@@ -73,8 +73,20 @@ function Credentials() {
                 <div className="absolute right-4 top-4 rounded-full border border-white/[0.08] px-2 py-1 font-display text-[10px] text-slate-500">
                   {cert.year}
                 </div>
-                <div className="mb-5 grid h-11 w-11 place-items-center rounded-xl border border-emerald-300/20 bg-emerald-300/[0.07] font-display text-sm font-bold text-emerald-100">
-                  OK
+                <div className="mb-5 flex h-9 w-9 items-center justify-center rounded-lg border border-emerald-400/25 bg-emerald-400/10">
+                  <svg
+                    aria-hidden="true"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#10B981"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
                 </div>
                 <h3 className="font-display text-base font-semibold leading-6 text-white">{cert.name}</h3>
                 <p className="mt-2 font-display text-xs font-medium uppercase tracking-[0.13em] text-cyan-200">
